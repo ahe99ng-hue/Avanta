@@ -56,7 +56,7 @@ interface CaseStudy {
 // -------------------------------------------------------------
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
-  const [whatsappNumber, setWhatsappNumber] = useState('201000000000'); // Customizable
+  const [whatsappNumber, setWhatsappNumber] = useState('201553111940'); // Customizable
 
   // 1. Detect scroll position to morph navbar
   useEffect(() => {
