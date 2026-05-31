@@ -1,0 +1,6 @@
+{
+  "name": "Avanta",
+  "description": "A high-fidelity dark editorial landing page for Avanta, a complete brand and web studio that helps local small businesses stand out and win paying clients.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
