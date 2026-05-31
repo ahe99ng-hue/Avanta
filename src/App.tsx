@@ -77,33 +77,33 @@ export default function App() {
   const caseStudies: CaseStudy[] = [
     {
       title: "Jimmy's Coffee",
-      category: "Artisanal Specialty Café",
-      tagline: "Bridging architectural design with authentic roasting to build Alexandria's premier weekend spot.",
+      category: "Alexandria Specialty Café",
+      tagline: "Building a beautiful look and brand to help Alexandria's favorite cafe get more weekend customers.",
       image: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&q=80&w=800",
       logoText: "JIMMY'S",
       isReal: true,
       link: "https://jimmycoffee.netlify.app/",
-      stats: "+240% Engagement · First Visual Kit"
+      stats: "Alexandria's Premier Spot · Brand Design"
     },
     {
       title: "Volt Gym",
-      category: "Hyper-Luxury Fitness Club",
-      tagline: "Bold typography meets raw carbon steel graphics to attract members ready to invest in performance.",
+      category: "Nile Fitness Club",
+      tagline: "Helping a premium gym attract new members with a clean, high-end design that stands out locally.",
       image: "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&q=80&w=800",
       logoText: "VOLT.",
       isReal: false,
       link: "#",
-      stats: "Elite Identity Concept"
+      stats: "Premium Cairo Gym · Design Style"
     },
     {
       title: "Terra Skincare",
-      category: "Organic Botanical Aesthetics",
-      tagline: "Earthy, minimal color spaces and high-trust editorial layouts designed to guide clients directly to booking.",
+      category: "Local Skincare Shop",
+      tagline: "Helping an organic skincare brand look professional and trustworthy so customers can book services easily.",
       image: terraSkincareImg,
       logoText: "TERRA",
       isReal: false,
       link: "#",
-      stats: "Creative Concept"
+      stats: "Organic Skincare Brand · Design Style"
     },
   ];
 
@@ -128,13 +128,13 @@ export default function App() {
           {/* Header */}
           <div className="mb-16 md:mb-24 text-center max-w-3xl mx-auto">
             <span className="font-mono text-xs text-champagne uppercase tracking-[0.25em] block mb-4">
-              [ Bespoke Solutions ]
+              [ Our Services ]
             </span>
             <h2 className="text-3xl md:text-5xl font-sans tracking-tight text-ivory font-semibold mb-6">
-              Three pillars designed to make your local business <span className="font-serif italic text-champagne font-medium">dominate</span>.
+              Three ways we help your local business <span className="font-serif italic text-champagne font-medium">attract more customers</span>.
             </h2>
             <p className="text-slate-custom/80 font-sans text-sm md:text-base leading-relaxed">
-              We eliminate typical freelance noise. Our deliverables are engineered software artifacts, calibrated visually to build instant prestige for local commerce.
+              We make the process simple. We design high-end websites and brands that make you stand out locally, build instant trust, and get clients calling.
             </p>
           </div>
 
@@ -207,8 +207,7 @@ function Navbar({ scrolled, getWhatsAppURL }: { scrolled: boolean; getWhatsAppUR
             rel="noreferrer"
             className="hidden sm:inline-flex items-center gap-2 bg-[#C9A84C] text-[#0D0D12] text-xs font-bold uppercase tracking-wider px-6 py-2.5 rounded-full hover:scale-105 transition-transform"
           >
-            <span>Start on WhatsApp</span>
-            <ArrowUpRight className="w-3.5 h-3.5" />
+            <span>Talk on WhatsApp →</span>
           </a>
 
           {/* Hamburger Menu Icon */}
@@ -249,8 +248,7 @@ function Navbar({ scrolled, getWhatsAppURL }: { scrolled: boolean; getWhatsAppUR
               onClick={() => setMobileMenuOpen(false)}
               className="flex items-center justify-center gap-2 bg-[#C9A84C] text-[#0D0D12] text-xs font-bold uppercase tracking-wider py-3.5 rounded-full transition-all duration-300 hover:scale-105"
             >
-              <span>SEND A MESSAGE</span>
-              <MessageSquare className="w-4 h-4" />
+              <span>Talk on WhatsApp →</span>
             </a>
           </motion.div>
         )}
@@ -322,7 +320,7 @@ function HeroSection({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => str
           <div className="hero-fade-up inline-flex items-center gap-2 bg-[#C9A84C]/10 border border-[#C9A84C]/20 rounded-full px-4 py-1.5 mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-[#C9A84C] animate-pulse" />
             <span className="font-mono text-[10px] md:text-xs text-[#FAF8F5]/80 uppercase tracking-widest font-normal">
-              Protocol v2.0 // Brand Studio
+              PROUDLY DESIGNING IN EGYPT // BRAND STUDIO
             </span>
           </div>
 
@@ -334,7 +332,7 @@ function HeroSection({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => str
 
           {/* Value Proposition Description */}
           <p className="hero-fade-up font-sans text-[#FAF8F5]/60 text-sm md:text-base font-light leading-relaxed max-w-lg mt-6">
-            We build complete brand systems for small businesses that want to look like world-class leaders. From $250. Delivered in 10 days.
+            We build beautiful websites and branding for small businesses that want to look like premium leaders. From $250. Delivered in 7 days.
           </p>
 
           {/* CTA Actions */}
@@ -345,16 +343,14 @@ function HeroSection({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => str
               rel="noreferrer"
               className="inline-flex items-center justify-center gap-2 bg-[#C9A84C] text-[#0D0D12] text-xs font-bold uppercase tracking-wider px-6 py-3.5 rounded-full hover:scale-105 transition-transform"
             >
-              <span>SECURE ARCHETYPE SYSTEM</span>
-              <ArrowUpRight className="w-4 h-4" />
+              <span>Start Your Project →</span>
             </a>
 
             <a 
-              href="#services" 
+              href="#case-studies" 
               className="inline-flex items-center justify-center gap-2 border border-[#FAF8F5]/10 hover:border-[#C9A84C]/30 text-[#FAF8F5]/70 text-xs font-mono tracking-widest uppercase px-5 py-3.5 rounded-full transition-all duration-305 hover:bg-white/5 active:scale-95 group"
             >
-              <span>EXPLORE SERVICES</span>
-              <ArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
+              <span>See Our Work →</span>
             </a>
           </div>
         </div>
@@ -388,7 +384,7 @@ function HeroSection({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => str
           <div className="absolute bottom-[-50px] right-[-50px] w-48 h-48 rounded-full bg-[#C9A84C]/5 blur-3xl pointer-events-none" />
           
           <div className="flex justify-between items-center font-mono text-[9px] text-[#FAF8F5]/40 leading-none relative z-10">
-            <span>AVANTA CONVERGENCE NODE</span>
+            <span>AVANTA DESIGN STUDIO</span>
             <span className="flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               EST. 2026 // CAIRO
@@ -415,15 +411,15 @@ function HeroSection({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => str
 
             <div>
               <span className="font-mono text-[9px] text-[#C9A84C] uppercase tracking-widest block">Active Metric</span>
-              <h4 className="text-lg md:text-xl font-bold text-[#FAF8F5] leading-snug">99.8% Client Retention</h4>
-              <p className="text-[11px] text-[#FAF8F5]/40 leading-relaxed mt-0.5">Local businesses transformed across Egypt and online nodes.</p>
+              <h4 className="text-lg md:text-xl font-bold text-[#FAF8F5] leading-snug">Egypt's Premier Studio</h4>
+              <p className="text-[11px] text-[#FAF8F5]/40 leading-relaxed mt-0.5">Helping local cafes, gyms, and shops attract high-value regulars across Egypt.</p>
             </div>
 
             {/* Embedded Live Graph/Sparkline inside the card */}
             <div className="bg-black/35 border border-[#FAF8F5]/5 rounded-xl p-2.5 relative overflow-hidden h-[54px] flex flex-col justify-end">
               <div className="absolute top-2 left-2.5 flex items-center gap-1.5 font-mono text-[7.5px] text-[#C9A84C]">
                 <span className="w-1 h-1 rounded-full bg-[#C9A84C] animate-ping" />
-                <span>REALTIME METRIC STREAM</span>
+                <span>CUSTOMER CONVERSION FOCUS</span>
               </div>
               <svg className="w-full h-6 overflow-visible" viewBox="0 0 200 40" preserveAspectRatio="none">
                 <defs>
@@ -462,8 +458,8 @@ function HeroSection({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => str
           </div>
           
           <div className="flex justify-between items-center border-t border-[#FAF8F5]/5 pt-3 font-mono text-[9px] text-[#FAF8F5]/50 leading-none relative z-10">
-            <span>STATUS // NOMINAL</span>
-            <span className="text-[#C9A84C] font-semibold">100% SUCCESS RATE</span>
+            <span>HIGH-END DESIGN</span>
+            <span className="text-[#C9A84C] font-semibold">7-DAY GUARANTEE</span>
           </div>
         </motion.div>
       </motion.div>
@@ -478,24 +474,24 @@ function CardShuffler() {
   const [items, setItems] = useState([
     { 
       id: 1, 
-      label: "IDENTITY ARCHITECTURE", 
-      metric: "01 / Brand System", 
-      title: "Bespoke Logo & Palette Grid", 
-      desc: "Architecting color spectrums, modular icons, and typographic pairing that command instant authority." 
+      label: "BRAND DESIGN", 
+      metric: "01 / Brand Style", 
+      title: "Unique Logo & Matching Colors", 
+      desc: "Creating beautiful color palettes, logos, and fonts that make your cafe or shop stand out." 
     },
     { 
       id: 2, 
-      label: "TONE & VOICE AUDIT", 
-      metric: "02 / Editorial Script", 
-      title: "High-Status Messaging Language", 
-      desc: "Structuring professional copy that explains absolute excellence, moving you above cheap competitors." 
+      label: "CLEAR CHAT COPY", 
+      metric: "02 / Simple Messaging", 
+      title: "Simple & Clear Copywriting", 
+      desc: "Writing friendly, persuasive English copy that speaks directly to Cairo and Alexandria business customers." 
     },
     { 
       id: 3, 
-      label: "VISUAL GUIDELINE SYSTEM", 
-      metric: "03 / Digital Assets", 
-      title: "Ready-To-Print Media Kit", 
-      desc: "Delivering fully compiled assets configured for local physical printing, social channels, and maps." 
+      label: "READY-TO-USE ASSETS", 
+      metric: "03 / Brand Kit", 
+      title: "Complete Printing Media Kit", 
+      desc: "Delivering your final logo and images beautifully formatted for physical prints, social media, and Google Maps." 
     }
   ]);
 
@@ -518,14 +514,14 @@ function CardShuffler() {
           <div className="bg-[#C9A84C]/10 text-[#C9A84C] p-3 rounded-2xl border border-[#C9A84C]/25">
             <Paintbrush className="w-5 h-5" />
           </div>
-          <span className="font-mono text-[10px] text-[#FAF8F5]/40 uppercase tracking-widest">[ COMPONENT_A: SHUFFLER ]</span>
+          <span className="font-mono text-[10px] text-[#FAF8F5]/40 uppercase tracking-widest">[ SHUFFLER DIRECTORY ]</span>
         </div>
 
         <h3 className="text-xl md:text-2xl font-bold font-sans text-ivory tracking-tight mb-2">
-          Diagnostic Brand Modeler
+          Professional Brand Mockups
         </h3>
         <p className="text-xs md:text-sm text-[#FAF8F5]/60 leading-relaxed font-sans mb-8">
-          A bespoke virtual drafting kit that cycles complete color, logo, and structural assets automatically to ensure beautiful continuity.
+          We draft and refine your brand colors, custom logos, and fonts together to make sure your business looks exceptionally professional.
         </p>
       </div>
 
@@ -579,7 +575,7 @@ function CardShuffler() {
                       <span className="w-2 h-2 rounded-full bg-slate-custom" />
                       <span className="w-2 h-2 rounded-full bg-ivory" />
                     </div>
-                    <span className="text-[8px] font-mono text-[#DAB85A]">STATUS: CALIBRATED</span>
+                    <span className="text-[8px] font-mono text-[#DAB85A]">STATUS: READY</span>
                   </div>
                 </motion.div>
               );
@@ -596,21 +592,21 @@ function CardShuffler() {
 // -------------------------------------------------------------
 function CardTelemetry() {
   const terminalLinesPool = [
-    "> INITIALIZE conversion_funnel.sh",
-    "> COMPILING high_intent_matrix... DONE",
-    "> PARSING client_interest: 'café_prestige'",
-    "> OPTIMIZING route_speed: '99.8ms latency'",
-    "> ATTACHED: Direct WhatsApp Webhook",
-    "> STATUS: Safe secure connection...",
-    "> ENGAGED: 1-Tap contact configured",
-    "> DEPLOYED: Mobile response speed inside 14ms"
+    "> STARTING customer_chat_setup.sh",
+    "> BUILDING client_welcome_profile... READY",
+    "> ROUTING customer_inquiries: 'Egypt_business'",
+    "> ACCELERATING website: 'Loads instantly'",
+    "> ATTACHED: Direct chat to WhatsApp",
+    "> STATUS: Live message delivery...",
+    "> CONNECTED: Instant chat button ready",
+    "> READY: Mobile friendly speed optimized"
   ];
 
   const valueProps = [
-    "Vibrant high-contrast web architecture",
-    "Bespoke layout optimized for conversion",
-    "Tailored call-to-action systems",
-    "100% Google Lighthouse speed score"
+    "Beautiful design layout",
+    "Optimized to get you more calls",
+    "Instant booking buttons",
+    "Super fast load speeds"
   ];
 
   const [activeLine, setActiveLine] = useState(0);
@@ -644,15 +640,15 @@ function CardTelemetry() {
           </div>
           <div className="flex items-center gap-2 font-mono text-[10px]">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-            <span className="text-emerald-400 font-semibold">[ REALTIME LOGGER ]</span>
+            <span className="text-emerald-400 font-semibold">[ REALTIME CHAT ]</span>
           </div>
         </div>
 
         <h3 className="text-xl md:text-2xl font-bold font-sans text-ivory tracking-tight mb-2">
-          WhatsApp Telemetry Hub
+          WhatsApp Customer Connect
         </h3>
         <p className="text-xs md:text-sm text-[#FAF8F5]/60 leading-relaxed font-sans mb-6">
-          Converting local lookers into paying customers via streamlined high-status landing pages integrated with direct fast messaging hooks.
+          Converting local visitors into paying customers by adding simple, direct chat buttons that connect clients straight to your phone.
         </p>
       </div>
 
@@ -660,10 +656,10 @@ function CardTelemetry() {
       <div className="flex-1 w-full bg-[#0D0D12] border border-[#FAF8F5]/5 rounded-xl p-4 font-mono text-xs flex flex-col justify-between shadow-inner h-[200px]">
         <div className="space-y-1 overflow-hidden">
           <div className="flex justify-between border-b border-white/5 pb-2 mb-2 text-[9px] text-stone-500">
-            <span>FILE: APP_ROUTE_OPTIMIZER.SYS</span>
-            <span>PORT 3000 // OK</span>
+            <span>FILE: MOBILE_CHAT_SETUP.SYS</span>
+            <span>LIVE CHAT CONNECTED</span>
           </div>
-          <div className="text-stone-500 text-[10px]">&gt; SYSTEM BOOT COMPLETED ON LOCALTIME</div>
+          <div className="text-stone-500 text-[10px]">&gt; DIRECT WHATSAPP BUTTON ADDED</div>
           <div className="text-champagne font-medium transition-all">
             {typedText}
             <span className="inline-block w-2 h-4 ml-1 bg-[#C9A84C] animate-pulse" />
@@ -737,10 +733,10 @@ function CardScheduler() {
       }, 8000);
 
       return () => {
-        clearTimeout(t1);
-        clearTimeout(t2);
-        clearTimeout(t3);
-        clearTimeout(t4);
+         clearTimeout(t1);
+         clearTimeout(t2);
+         clearTimeout(t3);
+         clearTimeout(t4);
       };
     };
 
@@ -754,14 +750,14 @@ function CardScheduler() {
           <div className="bg-[#C9A84C]/10 text-[#C9A84C] p-3 rounded-2xl border border-[#C9A84C]/25">
             <Cpu className="w-5 h-5" />
           </div>
-          <span className="font-mono text-[10px] text-[#FAF8F5]/40 uppercase tracking-widest">[ DEPLOYMENT_GRID: SPEED ]</span>
+          <span className="font-mono text-[10px] text-[#FAF8F5]/40 uppercase tracking-widest">[ 7-DAY DELIVERY GUARANTEE ]</span>
         </div>
 
         <h3 className="text-xl md:text-2xl font-bold font-sans text-ivory tracking-tight mb-2">
-          7-Day Transformation Engine
+          7-Day Launch Promise
         </h3>
         <p className="text-xs md:text-sm text-[#FAF8F5]/60 leading-relaxed font-sans mb-6">
-          Your entire system designed, coded, tested, and fully compiled on custom production instances within a rigid calendar week. Guaranteed.
+          Your entire new website is designed, written, and launched live onto the web in exactly one week. No delays, no stress. Guaranteed.
         </p>
       </div>
 
@@ -771,9 +767,9 @@ function CardScheduler() {
         {/* Days Header */}
         <div>
           <div className="flex justify-between items-center mb-3">
-            <span className="font-mono text-[8.5px] text-stone-500 uppercase">TRANSFORMATION TIMELINE ROUTING</span>
+            <span className="font-mono text-[8.5px] text-stone-500 uppercase">CREATIVE DESIGN WEEK</span>
             <span className="font-mono text-[9px] text-champagne bg-champagne/10 px-2 py-0.5 rounded border border-champagne/30">
-              {schedulerStep === 3 ? "LAUNCH DEPLOYED" : "COMPILING STAGES"}
+              {schedulerStep === 3 ? "WEBSITE LIVE" : "LAUNCH STAGES"}
             </span>
           </div>
 
@@ -806,9 +802,9 @@ function CardScheduler() {
         {/* Dynamic Action Button Pressed by virtual cursor */}
         <div className="flex justify-between items-center bg-obsidian/80 border border-white/5 rounded-lg px-3 py-2.5 mt-2">
           <div className="flex flex-col">
-            <span className="text-[7.5px] font-mono text-stone-500 uppercase">OUTPUT DIRECTORY STATUS</span>
+            <span className="text-[7.5px] font-mono text-stone-500 uppercase">WEBSITE LAUNCH STATUS</span>
             <span className="text-[11px] font-sans text-ivory font-bold truncate">
-              {schedulerStep === 3 ? "✓ jimmycoffee.netlify.app/ LIVE" : "Awaiting Deploy Stage 6..."}
+              {schedulerStep === 3 ? "✓ jimmycoffee.netlify.app/ LIVE" : "Awaiting final launch..."}
             </span>
           </div>
 
@@ -819,7 +815,7 @@ function CardScheduler() {
                 : 'bg-stone-800 text-stone-400 border border-white/5'
             }`}
           >
-            {savePressed ? "ONLINE" : "STANDBY"}
+            {savePressed ? "LAUNCHED" : "READY"}
           </button>
         </div>
 
@@ -890,21 +886,21 @@ function PhilosophySection() {
         
         <div className="flex-1 space-y-8 select-none relative z-10">
           <span className="manifesto-reveal font-mono text-xs text-[#C9A84C] uppercase tracking-[0.3em] block">
-            [ THE MANIFESTO ]
+            [ OUR MISSION ]
           </span>
           
           <div className="space-y-8">
             <div className="manifesto-reveal">
               <span className="font-mono text-[10px] text-[#FAF8F5]/40 uppercase block mb-1.5">TRADITIONAL BOTTLENECKS //</span>
               <p className="text-sm md:text-base font-light text-stone-400 font-sans leading-relaxed">
-                Most design studios and web agencies focus exclusively on <span className="text-[#FAF8F5] font-semibold">unnecessarily bloated portfolios</span>, infinite multi-month layout mockups, and excessive invoice rates. Small business owners pay thousands just to end up standing still.
+                Most design studios and web agencies focus exclusively on <span className="text-[#FAF8F5] font-semibold">unnecessarily complex code</span>, infinite multi-month layouts, and excessive invoice rates. Small business owners pay thousands just to end up standing still.
               </p>
             </div>
 
             <div className="manifesto-reveal border-t border-[#FAF8F5]/5 pt-6">
-              <span className="font-mono text-[10px] text-[#C9A84C] uppercase block mb-1.5">THE AVANTA SYNTAX SYSTEM //</span>
+              <span className="font-mono text-[10px] text-[#C9A84C] uppercase block mb-1.5">THE AVANTA APPROACH //</span>
               <h2 className="text-xl md:text-2xl font-bold font-sans text-[#FAF8F5] tracking-tight leading-relaxed">
-                We focus purely on <span className="font-serif italic text-[#C9A84C] text-2.5xl md:text-3xl font-medium block sm:inline">businesses that win.</span> Complete brand portfolios, hyper-fast delivery timescales, and automated booking triggers.
+                We focus purely on <span className="font-serif italic text-[#C9A84C] text-2.5xl md:text-3xl font-medium block sm:inline">helping your brand stand out.</span> Clean, high-end branding, lightning-fast delivery in 7 days, and direct client call buttons that work seamlessly.
               </h2>
             </div>
           </div>
@@ -915,12 +911,12 @@ function PhilosophySection() {
         {/* Grid of detail numbers following Bento Design stats block */}
         <div className="manifesto-reveal grid grid-cols-2 gap-6 w-full lg:w-auto shrink-0 select-none relative z-10">
           <div className="flex flex-col bg-[#0D0D12] p-6 rounded-2xl border border-[#FAF8F5]/5 min-w-[130px] shadow-inner">
-            <span className="text-4xl font-light font-sans text-[#C9A84C] leading-none">10</span>
+            <span className="text-4xl font-light font-sans text-[#C9A84C] leading-none">7</span>
             <span className="text-[9px] font-mono text-[#FAF8F5]/40 uppercase tracking-widest mt-2 block">Days Delivery</span>
           </div>
           <div className="flex flex-col bg-[#0D0D12] p-6 rounded-2xl border border-[#FAF8F5]/5 min-w-[130px] shadow-inner">
             <span className="text-4xl font-light font-sans text-[#C9A84C] leading-none">$250</span>
-            <span className="text-[9px] font-mono text-[#FAF8F5]/40 uppercase tracking-widest mt-2 block">Base Package</span>
+            <span className="text-[9px] font-mono text-[#FAF8F5]/40 uppercase tracking-widest mt-2 block">Starting Price</span>
           </div>
         </div>
       </div>
@@ -962,20 +958,20 @@ function ProtocolSection() {
   const steps = [
     {
       num: "01",
-      title: "Synthesize the Identity Blueprint",
-      desc: "We analyze your audience and build a complete high-status visual language package (logo, custom typography grid, color spacing) to signal high quality to local buyers in Alexandria and Cairo.",
+      title: "Design Your Brand & Logos",
+      desc: "We build a beautiful, high-end visual look for your business (logo, colors, clear simple fonts) to tell Alexandria and Cairo customers that you offer premium quality.",
       visual: "spin"
     },
     {
       num: "02",
-      title: "Develop high-converting landing architecture",
-      desc: "Our team compiles your custom high-converting web system using custom coding patterns. Pages are structurally responsive, loading on ultra-modern hosting structures instantly.",
+      title: "Build Your Fast New Website",
+      desc: "Our team creates a custom, easy-to-use website that loads immediately on all phones and desktops. We make sure it is designed solely to turn local visitors into paying regulars.",
       visual: "laser"
     },
     {
       num: "03",
-      title: "Automation Hook & Seamless Handover",
-      desc: "We configure a direct WhatsApp outreach CTA, making booking, café orders, or consultation questions click-to-book smooth. Your system launches in 7 days, complete with referral loops.",
+      title: "Connect WhatsApp & Launch",
+      desc: "We add direct chat buttons that let customers call, book, or order easily with one click. Your brand and website goes live in exactly 7 days.",
       visual: "wave"
     }
   ];
@@ -989,13 +985,13 @@ function ProtocolSection() {
       {/* Structural Headers */}
       <div className="mb-16 text-center">
         <span className="font-mono text-xs text-champagne uppercase tracking-[0.25em] block mb-3">
-          [ DEPLOYMENT FLOW ]
+          [ HOW WE WORK ]
         </span>
         <h2 className="text-3xl md:text-5xl font-sans font-bold text-ivory tracking-tight mb-4">
-          The 3-stage deployment system
+          Our simple 3-step design process
         </h2>
         <p className="text-sm font-sans text-stone-400 max-w-xl mx-auto">
-          We combine branding, rapid deployment, and chat triggers into a repeatable product roadmap designed for local cafés, gyms, and shops.
+          We combine premium branding, fast launch, and direct WhatsApp buttons to make starting your project effortless.
         </p>
       </div>
 
@@ -1009,7 +1005,7 @@ function ProtocolSection() {
             {/* Left Content */}
             <div className="flex-1 space-y-4">
               <span className="font-mono text-xs text-[#C9A84C] bg-[#C9A84C]/10 px-3.5 py-1.5 rounded-full border border-[#C9A84C]/20 inline-block font-semibold">
-                SYSTEM MODULE {step.num}
+                STEP {step.num}
               </span>
               <h3 className="text-2xl md:text-4xl font-sans font-bold text-ivory tracking-tight leading-tight">
                 {step.title}
@@ -1061,7 +1057,7 @@ function ProtocolSection() {
 
                   <div className="z-10 mt-auto bg-obsidian/90 p-2.5 rounded border border-white/10 w-full font-mono text-[9px] text-stone-400 space-y-1">
                     <div className="flex justify-between">
-                      <span>HTML COMPILING:</span>
+                      <span>DESIGN BUILD:</span>
                       <span className="text-champagne font-bold">100% OK</span>
                     </div>
                     <div className="h-1 w-full bg-slate-custom/30 rounded overflow-hidden">
@@ -1086,7 +1082,7 @@ function ProtocolSection() {
                     />
                   </svg>
                   <span className="font-mono text-[9px] text-center text-[#DAB85A] mt-2 tracking-widest uppercase">
-                    ACTIVE PULSING CONVERSION
+                    WHATSAPP CONNECTED
                   </span>
                 </div>
               )}
@@ -1115,14 +1111,14 @@ function CaseStudiesSection({
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 md:mb-24 gap-6">
           <div className="max-w-2xl text-left">
             <span className="font-mono text-xs text-champagne uppercase tracking-[0.25em] block mb-4">
-              [ REAL WORLD MOMENTUM ]
+              [ OUR RECENT WORK ]
             </span>
             <h2 className="text-3xl md:text-5xl font-sans tracking-tight text-ivory font-bold">
-              Studios designed for <span className="font-serif italic text-champagne font-medium">uncompromising presence</span>.
+              Designs that help local brands <span className="font-serif italic text-champagne font-medium">grow and stand out</span>.
             </h2>
           </div>
           <p className="text-stone-400 font-sans text-sm max-w-sm md:text-right leading-relaxed mb-1">
-            Browse our core portfolio and ongoing conceptual blueprints engineered for gyms, skincare brands, and cafés.
+            Browse our beautiful designs crafted specifically for local gyms, skincare shops, and cafes in Cairo and Alexandria.
           </p>
         </div>
 
@@ -1153,11 +1149,11 @@ function CaseStudiesSection({
                   {caseStudy.isReal ? (
                     <span className="font-mono text-[9px] bg-[#0D0D12] text-[#C9A84C] px-2.5 py-1 rounded-full font-bold uppercase tracking-widest border border-[#C9A84C]/25 flex items-center gap-1">
                       <Star className="w-2.5 h-2.5 fill-current" />
-                      LIVE CLIENT LAUNCH
+                      LIVE CLIENT WEBSITE
                     </span>
                   ) : (
                     <span className="font-mono text-[9px] bg-[#0D0D12]/90 text-[#FAF8F5]/60 px-2.5 py-1 rounded-full uppercase tracking-widest border border-[#FAF8F5]/10">
-                      CONCEPT DESIGN BLUEPRINT
+                      CONCEPT DESIGN STYLE
                     </span>
                   )}
                 </div>
@@ -1196,8 +1192,7 @@ function CaseStudiesSection({
                         rel="noreferrer"
                         className="inline-flex items-center gap-1.5 font-mono text-[10px] text-[#0D0D12] hover:text-[#0D0D12]/80 transition-colors uppercase tracking-widest font-bold border-b-2 border-[#0D0D12]"
                       >
-                        <span>VISIT SITE</span>
-                        <ExternalLink className="w-3 h-3" />
+                        <span>See Our Work →</span>
                       </a>
                     </div>
                   ) : (
@@ -1207,8 +1202,7 @@ function CaseStudiesSection({
                         href={getWhatsAppURL(`Hi Avanta, I really like the '${caseStudy.title}' design style. Can we do something similar for my business?`)}
                         className="inline-flex items-center gap-1 font-mono text-[10px] text-[#FAF8F5]/60 hover:text-[#C9A84C] transition-colors uppercase tracking-widest"
                       >
-                        <span>CLAIM STYLE</span>
-                        <ChevronRight className="w-3.5 h-3.5" />
+                        <span>Start Your Project →</span>
                       </a>
                     </div>
                   )}
@@ -1228,49 +1222,49 @@ function CaseStudiesSection({
 function PricingGrid({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => string }) {
   const plans = [
     {
-      name: "Brand Archetype",
+      name: "Professional Brand Design",
       price: "$150",
       time: "5–7 Days Delivery",
-      desc: "For local stores and boutiques that have a loyal following but need to look like an established business online.",
+      desc: "For local shops and cafes that have loyal customers but want to look highly professional and modern.",
       features: [
-        "Uncompromising Logo System",
-        "Calibrated Typography Scales",
-        "Prestige Editorial Guidelines",
-        "Ready-to-print SVG asset directory",
-        "Optimized Social Channel Brand Assets"
+        "Complete Logo Package",
+        "Beautiful & Clear Fonts",
+        "Professional Color Palette",
+        "Ready-to-print logo files",
+        "Formatted graphics for social media"
       ],
-      cta: "SECURE ARCHETYPE",
+      cta: "Start Your Project →",
       highlight: false
     },
     {
-      name: "The Complete System",
+      name: "The Complete Online Package",
       price: "$250",
       time: "7–10 Days Delivery",
-      desc: "Our high-status signature package. The ultimate complete transition of brand identity fused with lightning-speed booking launch.",
+      desc: "Our best-selling package. We design your unique brand look and build your fast, customer-getting website all in one.",
       features: [
-        "Everything in Brand Archetype",
-        "High-Converting Landing Architecture",
-        "Full mobile-first adaptive UI",
-        "Custom instant-response WhatsApp Integration",
-        "100% Client-Ownership of complete code/assets",
-        "SEO architecture setup (Cairo/Alexa targeting)"
+        "Everything in Professional Brand Design",
+        "Fast, High-Converting Website",
+        "Fully optimized for mobile screens",
+        "Built-in WhatsApp booking button",
+        "100% ownership of design & files",
+        "Optimized for local search in Egypt"
       ],
-      cta: "SECURE COMPLETE TRANSFORMATION",
+      cta: "Start Your Project →",
       highlight: true
     },
     {
-      name: "Performance Portal",
+      name: "Nile Launch Offer",
       price: "$120",
       time: "3–5 Days Delivery",
-      desc: "A rapid 1-screen conversions solution. Perfect for direct social traffic landing to drive immediate inquiries.",
+      desc: "A rapid, single-page website to launch your business online. Perfect for getting direct bookings immediately via social media.",
       features: [
-        "Fully coded custom React landing structure",
-        "Embedded conversion triggers and popups",
-        "WhatsApp click-to-book automation webhook",
-        "Lighthouse performance rating of 99s",
-        "Free secure production hosting setup"
+        "One-page custom-coded website",
+        "Clear call-to-action sections",
+        "Integrated WhatsApp button",
+        "Lightning-fast mobile load speed",
+        "Free hosting setup help"
       ],
-      cta: "SECURE CONVERSION PORTAL",
+      cta: "Start Your Project →",
       highlight: false
     }
   ];
@@ -1281,13 +1275,13 @@ function PricingGrid({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => str
         {/* Title block */}
         <div className="mb-16 md:mb-24 text-center max-w-2xl mx-auto">
           <span className="font-mono text-xs text-champagne uppercase tracking-[0.25em] block mb-4">
-            [ UNCOMPROMISING PRICING ]
+            [ SIMPLE UPFRONT PLANS ]
           </span>
           <h2 className="text-3xl md:text-5xl font-sans tracking-tight text-ivory font-bold mb-4">
-            No dynamic margins. Simple upfront packages.
+            No hidden fees. Simple upfront prices.
           </h2>
           <p className="text-stone-400 font-sans text-sm md:text-base">
-            Deliverables with clear target dates. 50% deposit starts the build, remainder delivered upon full satisfaction and live launch.
+            Simple 7-day delivery targets. Start with a 50% deposit, and pay the rest only after you are completely happy with the final launch.
           </p>
         </div>
 
@@ -1321,7 +1315,7 @@ function PricingGrid({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => str
                 {/* Highlight Label */}
                 {plan.highlight && (
                   <span className="absolute -top-4.5 left-1/2 -translate-x-1/2 bg-[#C9A84C] text-[#0D0D12] text-[8px] md:text-[8.5px] font-mono tracking-[0.16em] uppercase font-bold py-1 px-4.5 rounded-full border border-[#C9A84C] shadow-[0_4px_16px_rgba(201,168,76,0.3)] select-none whitespace-nowrap z-20 text-center">
-                    ★ RECOMMENDED COMPLETE TRANSFORMATION
+                    ★ RECOMMENDED COMPLETE PLAN
                   </span>
                 )}
 
@@ -1341,7 +1335,7 @@ function PricingGrid({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => str
                 </p>
 
                 <div className="border-t border-[#FAF8F5]/5 pt-6 mb-8">
-                  <span className="font-mono text-[9px] text-[#FAF8F5]/40 uppercase tracking-widest block mb-4">SPECIFICATIONS INCLUDED</span>
+                  <span className="font-mono text-[9px] text-[#FAF8F5]/40 uppercase tracking-widest block mb-4">WHAT IS INCLUDED</span>
                   <ul className="space-y-3.5">
                     {plan.features.map((feature, idx) => (
                       <li key={idx} className="flex gap-2.5 items-start text-xs text-stone-300 font-sans group/feat">
@@ -1392,7 +1386,7 @@ function Footer({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => string }
               <span className="text-xl font-bold tracking-[0.16em] text-ivory uppercase">AVANTA</span>
             </a>
             <p className="text-sm text-stone-400 max-w-sm font-light leading-relaxed">
-              We design legendary visual identity profiles and code elite conversion pages to make local businesses attract consistent clients and look like the premier institution.
+              We create beautiful brand logos and build ultra-fast websites to help Egyptian cafes, gyms, and shops attract regular, paying customers.
             </p>
           </div>
 
@@ -1400,10 +1394,10 @@ function Footer({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => string }
           <div className="space-y-4">
             <span className="font-mono text-[9px] text-[#DAB85A] uppercase tracking-[0.2em] block">STUDIO LINKS</span>
             <ul className="space-y-2 text-xs font-mono text-stone-500">
-              <li><a href="#services" className="hover:text-champagne transition-colors">SPECIFICATION SERVICES</a></li>
-              <li><a href="#protocol" className="hover:text-champagne transition-colors">THE 3-STAGE PROTOCOL</a></li>
-              <li><a href="#case-studies" className="hover:text-champagne transition-colors">ACTIVE CASE DIRECTORY</a></li>
-              <li><a href="#investment" className="hover:text-champagne transition-colors">PRICING PLANS</a></li>
+              <li><a href="#services" className="hover:text-champagne transition-colors">OUR SERVICES</a></li>
+              <li><a href="#protocol" className="hover:text-champagne transition-colors">HOW IT WORKS</a></li>
+              <li><a href="#case-studies" className="hover:text-champagne transition-colors">CASE STUDIES</a></li>
+              <li><a href="#investment" className="hover:text-champagne transition-colors">PRICING PACKAGES</a></li>
             </ul>
           </div>
 
@@ -1425,11 +1419,11 @@ function Footer({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => string }
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
             </span>
-            <span>SYSTEM MONITOR: 100% OPERATIONAL // ALEXANDRIA PLATFORM_NODE</span>
+            <span>AVANTA STUDIO · ALEXANDRIA &amp; CAIRO · EST. 2026</span>
           </div>
 
           <div>
-            <span>© 2026 AVANTA INC. · COMPILED WITH SOLIDITY &amp; PRIDE</span>
+            <span>© 2026 AVANTA INC. · BUILT WITH PASSION &amp; PRIDE</span>
           </div>
         </div>
       </div>
