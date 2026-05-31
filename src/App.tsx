@@ -31,6 +31,7 @@ import {
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import terraSkincareImg from './assets/images/terra_skincare_product_1780248943433.png';
 
 // Register GSAP plugins
 if (typeof window !== 'undefined') {
@@ -98,7 +99,7 @@ export default function App() {
       title: "Terra Skincare",
       category: "Organic Botanical Aesthetics",
       tagline: "Earthy, minimal color spaces and high-trust editorial layouts designed to guide clients directly to booking.",
-      image: "/src/assets/images/terra_skincare_product_1780248943433.png",
+      image: terraSkincareImg,
       logoText: "TERRA",
       isReal: false,
       link: "#",
