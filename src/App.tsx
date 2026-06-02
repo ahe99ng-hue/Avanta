@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, FormEvent } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Paintbrush, 
@@ -50,6 +50,60 @@ interface CaseStudy {
   isReal: boolean;
   link: string;
   stats: string;
+}
+
+// Helper to compute remaining local time until 12:00 AM midnight tonight
+function getRemainingTimeUntilMidnight() {
+  const now = new Date();
+  const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+  const diffMs = midnight.getTime() - now.getTime();
+  
+  if (diffMs <= 0) {
+    return { hours: 0, minutes: 0, seconds: 0 };
+  }
+  
+  const hours = Math.floor(diffMs / (1000 * 60 * 60));
+  const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+  
+  return { hours, minutes, seconds };
+}
+
+// -------------------------------------------------------------
+// COMPONENT: StickyPromoBar
+// -------------------------------------------------------------
+function StickyPromoBar() {
+  const [timeLeft, setTimeLeft] = useState(getRemainingTimeUntilMidnight());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(getRemainingTimeUntilMidnight());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="fixed top-0 left-0 w-full z-[100] bg-gradient-to-r from-[#C9A84C] via-[#FAF8F5] to-[#C9A84C] text-[#0D0D12] shadow-[0_4px_25px_rgba(201,168,76,0.35)] flex items-center justify-between px-3 md:px-6 py-2.5 transition-all duration-300">
+      <div className="flex-1 flex items-center justify-center gap-2 md:gap-4 text-center overflow-hidden">
+        <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse shrink-0 hidden xs:inline-block" />
+        <p className="font-mono text-[9px] md:text-xs font-bold uppercase tracking-wider leading-none truncate">
+          <span className="inline md:hidden">⚡ LIMITED OFFER: FREE SPOT (ENDS AT 12:00 AM)</span>
+          <span className="hidden md:inline">⚡ LIMITED-TIME PROMO: UPGRADE TO PREMIUM &amp; GET A FREE SPOT (ENDS AT 12:00 AM TONIGHT)</span>
+        </p>
+        <div className="flex items-center gap-1 bg-[#0D0D12]/10 border border-[#0D0D12]/20 px-2 py-0.5 rounded-md shrink-0">
+          <span className="font-mono text-[10px] md:text-[11px] font-extrabold text-[#0D0D12] tracking-wider leading-none">
+            {String(timeLeft.hours).padStart(2, '0')}:{String(timeLeft.minutes).padStart(2, '0')}:{String(timeLeft.seconds).padStart(2, '0')}
+          </span>
+        </div>
+      </div>
+      <a 
+        href="#claim-offer-section" 
+        className="bg-[#0D0D12] text-[#C9A84C] hover:bg-stone-900 hover:text-white font-sans text-[8px] md:text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full transition-all active:scale-95 leading-none shrink-0"
+      >
+        Claim Spot
+      </a>
+    </div>
+  );
 }
 
 // -------------------------------------------------------------
@@ -108,7 +162,10 @@ export default function App() {
   ];
 
   return (
-    <div className="relative min-h-screen selection:bg-champagne selection:text-obsidian overflow-hidden">
+    <div className="relative min-h-screen selection:bg-champagne selection:text-obsidian overflow-hidden pt-11 md:pt-12">
+      {/* Dynamic top-bar for Limited-Time Offer */}
+      <StickyPromoBar />
+
       {/* 0. Noise overlay filter at ~0.05 opacity to eliminate flat gradients */}
       <div className="noise-overlay" />
 
@@ -177,7 +234,7 @@ function Navbar({ scrolled, getWhatsAppURL }: { scrolled: boolean; getWhatsAppUR
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-6 left-0 w-full z-50 px-4 transition-all duration-300">
+    <header className={`fixed ${scrolled ? 'top-12' : 'top-[52px] md:top-[60px]'} left-0 w-full z-50 px-4 transition-all duration-300`}>
       <div 
         className={`mx-auto max-w-5xl rounded-full transition-all duration-500 border ${
           scrolled 
@@ -262,207 +319,376 @@ function Navbar({ scrolled, getWhatsAppURL }: { scrolled: boolean; getWhatsAppUR
 // -------------------------------------------------------------
 function HeroSection({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => string }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  
+  // 1. Countdown Timer State for Urgency (Targeting exactly 12:00 AM local time midnight)
+  const [timeLeft, setTimeLeft] = useState(getRemainingTimeUntilMidnight());
+  
+  // 2. Spots Scarcity State (Simulates a real-time spot being claimed to drive massive action)
+  const [spotsClaimed, setSpotsClaimed] = useState(7);
+  const [spotClaimedNotification, setSpotClaimedNotification] = useState(false);
 
+  // 3. Form States
+  const [fullName, setFullName] = useState('');
+  const [contactInfo, setContactInfo] = useState('');
+  const [businessName, setBusinessName] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [generatedCode, setGeneratedCode] = useState('');
+
+  // Urgency Timer Effect (Synchronized local midnight timer)
   useEffect(() => {
-    // Elegant Entrance Animation using GSAP
-    const elements = gsap.utils.toArray('.hero-fade-up');
-    gsap.fromTo(elements, 
-      { y: 50, opacity: 0 }, 
-      { y: 0, opacity: 1, duration: 1.2, ease: "power4.out", stagger: 0.15 }
-    );
+    const timer = setInterval(() => {
+      setTimeLeft(getRemainingTimeUntilMidnight());
+    }, 1000);
+    return () => clearInterval(timer);
   }, []);
+
+  // Simulating live spot reservation after 12 seconds
+  useEffect(() => {
+    const spotTimer = setTimeout(() => {
+      setSpotsClaimed(8);
+      setSpotClaimedNotification(true);
+      // Fade out notification after 4 seconds
+      setTimeout(() => setSpotClaimedNotification(false), 4000);
+    }, 12000);
+
+    // Another simulated spot after 45 seconds
+    const spotTimerTwo = setTimeout(() => {
+      setSpotsClaimed(9);
+      setSpotClaimedNotification(true);
+      setTimeout(() => setSpotClaimedNotification(false), 4000);
+    }, 45000);
+
+    return () => {
+      clearTimeout(spotTimer);
+      clearTimeout(spotTimerTwo);
+    };
+  }, []);
+
+  const handleClaimSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!fullName || !contactInfo) return;
+
+    setIsSubmitting(true);
+    
+    // Simulate premium verification and validation
+    setTimeout(() => {
+      const randomCode = `AV-PREM-${Math.floor(1000 + Math.random() * 9000)}`;
+      setGeneratedCode(randomCode);
+      setIsSubmitting(false);
+      setIsSuccess(true);
+    }, 1200);
+  };
 
   return (
     <section 
       ref={containerRef}
-      className="relative min-h-[100dvh] w-full flex flex-col justify-center items-center py-28 px-4 z-20"
+      id="claim-offer-section"
+      className="relative min-h-[100dvh] w-full flex flex-col justify-center items-center py-28 md:py-36 px-4 z-20 scroll-mt-20"
     >
-      {/* Dynamic line matrix background */}
+      {/* Background patterns */}
       <div className="absolute inset-0 bg-[#0D0D12] z-0" />
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(201,168,76,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(201,168,76,0.01)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(201,168,76,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(201,168,76,0.015)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none z-0" />
 
-      <motion.div 
-        initial={{ opacity: 0, y: 40, scale: 0.98 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-        whileHover={{ y: -4, transition: { duration: 0.3 } }}
-        className="w-full max-w-5xl bg-gradient-to-br from-[#1A1A24] via-[#13131A] to-[#0D0D12] border border-[#FAF8F5]/5 rounded-[2.5rem] p-8 md:p-14 relative overflow-hidden shadow-2xl flex flex-col md:flex-row gap-12 items-center group/hero-bento transition-all duration-500"
-      >
-        {/* Dynamic ambient gold glowing orb */}
-        <motion.div 
-          animate={{
-            scale: [1, 1.2, 0.9, 1.15, 1],
-            x: [0, 50, -40, 25, 0],
-            y: [0, -30, 45, -15, 0],
-            opacity: [0.03, 0.08, 0.04, 0.09, 0.03]
-          }}
-          transition={{
-            duration: 16,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="absolute -top-12 -left-12 w-[400px] h-[400px] rounded-full bg-[#C9A84C]/25 blur-[100px] pointer-events-none select-none z-0"
-        />
+      {/* Exclusivity banner floating container */}
+      <div className="w-full max-w-5xl relative z-10 flex flex-col gap-8 md:gap-10">
+        
+        {/* Urgent Live Pulse Toast Notification */}
+        <AnimatePresence>
+          {spotClaimedNotification && (
+            <motion.div 
+              initial={{ opacity: 0, y: -20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.95 }}
+              className="absolute -top-16 left-1/2 -translate-x-1/2 bg-[#C9A84C] text-[#0D0D12] font-mono text-[11px] font-bold py-2 px-5 rounded-full shadow-[0_10px_30px_rgba(201,168,76,0.3)] z-50 flex items-center gap-2"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping" />
+              <span>ALERT: Another Cairo business just lock-in their spot. {10 - spotsClaimed} remaining!</span>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* Aesthetic geometric watermark from Bento design with slow continuous rotation */}
-        <motion.div 
-          animate={{ rotate: 360 }}
-          transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
-          className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none select-none origin-center"
-        >
-          <svg width="240" height="240" viewBox="0 0 100 100" className="fill-[#C9A84C]">
-            <path d="M50 0 L100 50 L50 100 L0 50 Z" />
-          </svg>
-        </motion.div>
+        {/* 1. HERO MAIN CARD (BENTO BOX) */}
+        <div className="w-full bg-gradient-to-br from-[#1C1C26] via-[#121219] to-[#0A0A0E] border border-[#FAF8F5]/5 rounded-[2.5rem] p-6 sm:p-8 md:p-14 relative overflow-hidden shadow-2xl flex flex-col lg:flex-row gap-10 lg:gap-12 items-stretch group/hero-bento transition-all duration-500">
+          
+          {/* Dynamic ambient gold glowing orbs */}
+          <div className="absolute -top-24 -left-24 w-[350px] h-[350px] rounded-full bg-[#C9A84C]/10 blur-[100px] pointer-events-none select-none z-0" />
+          <div className="absolute -bottom-24 -right-24 w-[350px] h-[350px] rounded-full bg-[#C9A84C]/5 blur-[100px] pointer-events-none select-none z-0" />
 
-        <div className="relative z-10 flex-1 flex flex-col items-start text-left select-none">
-          {/* Subtle Accent Intro Badge */}
-          <div className="hero-fade-up inline-flex items-center gap-2 bg-[#C9A84C]/10 border border-[#C9A84C]/20 rounded-full px-4 py-1.5 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#C9A84C] animate-pulse" />
-            <span className="font-mono text-[10px] md:text-xs text-[#FAF8F5]/80 uppercase tracking-widest font-normal">
-              PROUDLY DESIGNING IN EGYPT // BRAND STUDIO
-            </span>
+          {/* Left Text & Highlight Content */}
+          <div className="flex-1 flex flex-col justify-between relative z-10">
+            <div>
+              {/* Limited Time Offer badge */}
+              <div className="inline-flex items-center gap-2 bg-[#C9A84C]/15 border border-[#C9A84C]/35 rounded-full px-4 py-1.5 mb-6">
+                <Sparkles className="w-3.5 h-3.5 text-[#C9A84C] animate-spin" />
+                <span className="font-mono text-[10px] md:text-xs text-[#C9A84C] uppercase tracking-[0.2em] font-semibold">
+                  LIMITED TIME EXCLUSIVE OFFER
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#C9A84C] animate-pulse" />
+              </div>
+
+              {/* suggested Headline */}
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-sans font-semibold text-[#FAF8F5] tracking-tight leading-[1.1]">
+                Upgrade to Premium <br className="hidden sm:inline" />
+                <span className="font-serif italic text-[#C9A84C] mt-2 block">&amp; Get a FREE Spot.</span>
+              </h1>
+
+              {/* suggested Subheadline */}
+              <p className="font-sans text-[#FAF8F5]/70 text-sm md:text-base font-light leading-relaxed max-w-xl mt-6">
+                For a limited time, every Premium membership includes a free spot at no extra cost. Secure your place before the offer ends and expand your reach instantly.
+              </p>
+
+              {/* Value list items */}
+              <div className="mt-8 space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-[#C9A84C]/10 flex items-center justify-center text-[#C9A84C] shrink-0 border border-[#C9A84C]/25">
+                    <Check className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-xs md:text-sm text-[#FAF8F5]/80 font-sans">
+                    <strong>Include an Extra Partner</strong> completely free (Value of $150+)
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-[#C9A84C]/10 flex items-center justify-center text-[#C9A84C] shrink-0 border border-[#C9A84C]/25">
+                    <Check className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-xs md:text-sm text-[#FAF8F5]/80 font-sans">
+                    <strong>Egypt's Premier Brand Strategy</strong> &amp; high-converting architecture
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-[#C9A84C]/10 flex items-center justify-center text-[#C9A84C] shrink-0 border border-[#C9A84C]/25">
+                    <Check className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-xs md:text-sm text-[#FAF8F5]/80 font-sans">
+                    <strong>100% Satisfaction Guarantee</strong> with custom live WhatsApp status support
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Urgency Indicators Grid (Timer + Spots remaining) */}
+            <div className="mt-10 pt-8 border-t border-[#FAF8F5]/5 grid grid-cols-2 gap-4">
+              {/* Urgency 1: Countdown Clock */}
+              <div className="bg-[#14141E] border border-white/5 rounded-2xl p-4 flex flex-col justify-center">
+                <span className="font-mono text-[9px] text-[#C9A84C] uppercase tracking-widest block mb-2">OFFER EXPIRES IN</span>
+                <div className="flex items-baseline gap-1 font-mono text-lg md:text-xl font-bold text-ivory tracking-wider">
+                  <span>{String(timeLeft.hours).padStart(2, '0')}</span>
+                  <span className="text-[#C9A84C] animate-pulse">:</span>
+                  <span>{String(timeLeft.minutes).padStart(2, '0')}</span>
+                  <span className="text-[#C9A84C] animate-pulse">:</span>
+                  <span className="text-[#C9A84C]/80">{String(timeLeft.seconds).padStart(2, '0')}</span>
+                </div>
+                <span className="font-sans text-[9px] text-[#FAF8F5]/40 mt-1">Strict time limitation</span>
+              </div>
+
+              {/* Urgency 2: Spots claiming tracker */}
+              <div className="bg-[#14141E] border border-white/5 rounded-2xl p-4 flex flex-col justify-center">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="font-mono text-[9px] text-red-400 uppercase tracking-widest font-semibold">URGENCY RADAR</span>
+                  <span className="font-mono text-[10px] text-ivory font-bold">{10 - spotsClaimed} Left</span>
+                </div>
+                {/* Custom glowing progress bar */}
+                <div className="w-full h-2 bg-stone-900 rounded-full overflow-hidden border border-white/5 relative mt-1">
+                  <div 
+                    className="h-full bg-gradient-to-r from-red-500 to-[#C9A84C] rounded-full transition-all duration-1000"
+                    style={{ width: `${spotsClaimed * 10}%` }}
+                  />
+                </div>
+                <span className="font-sans text-[9px] text-[#FAF8F5]/40 mt-2">
+                  {spotsClaimed}/10 Premium places claimed
+                </span>
+              </div>
+            </div>
           </div>
 
-          {/* Headline following "[Aspirational noun] meets / [Precision word]." pattern */}
-          <h1 className="hero-fade-up text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-sans font-semibold text-[#FAF8F5] tracking-tight leading-[0.95] text-left">
-            Local business <br />
-            <span className="font-serif italic text-[#C9A84C] block mt-1">Meets Legend.</span>
-          </h1>
+          {/* Right Column: Premium Sign-up / Claim Form with animations */}
+          <div className="w-full lg:w-[380px] bg-[#14141C] border border-[#FAF8F5]/5 rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-lg relative min-h-[420px] shrink-0">
+            
+            <AnimatePresence mode="wait">
+              {!isSuccess ? (
+                <motion.div
+                  key="claim-form"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="h-full flex flex-col justify-between"
+                >
+                  <div>
+                    <h3 className="text-xl font-bold font-sans text-[#FAF8F5] tracking-tight mb-2 flex items-center gap-2">
+                      <Zap className="w-4 h-4 text-[#C9A84C] fill-current" />
+                      <span>Lock-In Your Promo</span>
+                    </h3>
+                    <p className="text-xs text-[#FAF8F5]/50 leading-relaxed font-sans mb-6">
+                      No credit card required. Instantly reserve your premium spot and get the extra seats included today.
+                    </p>
 
-          {/* Value Proposition Description */}
-          <p className="hero-fade-up font-sans text-[#FAF8F5]/60 text-sm md:text-base font-light leading-relaxed max-w-lg mt-6">
-            We build beautiful websites and branding for small businesses that want to look like premium leaders. From $250. Delivered in 7 days.
-          </p>
+                    <form onSubmit={handleClaimSubmit} className="space-y-4">
+                      {/* Name input */}
+                      <div>
+                        <label className="font-mono text-[9px] text-[#FAF8F5]/40 uppercase tracking-wider block mb-1">YOUR FULL NAME *</label>
+                        <input 
+                          type="text"
+                          required
+                          value={fullName}
+                          onChange={(e) => setFullName(e.target.value)}
+                          placeholder="e.g. Aly Ibrahim"
+                          className="w-full bg-stone-950 border border-white/5 focus:border-[#C9A84C]/45 rounded-xl px-4 py-3 text-xs text-ivory placeholder-stone-600 focus:outline-none transition-colors"
+                        />
+                      </div>
 
-          {/* CTA Actions */}
-          <div className="hero-fade-up flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mt-8 w-full sm:w-auto">
-            <a 
-              href={getWhatsAppURL("Hi Avanta! I saw the home page and I want a full transformation for my business.")}
-              target="_blank" 
-              rel="noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-[#C9A84C] text-[#0D0D12] text-xs font-bold uppercase tracking-wider px-6 py-3.5 rounded-full hover:scale-105 transition-transform"
-            >
-              <span>Start Your Project →</span>
-            </a>
+                      {/* Contact input */}
+                      <div>
+                        <label className="font-mono text-[9px] text-[#FAF8F5]/40 uppercase tracking-wider block mb-1">EMAIL OR WHATSAPP NUMBER *</label>
+                        <input 
+                          type="text"
+                          required
+                          value={contactInfo}
+                          onChange={(e) => setContactInfo(e.target.value)}
+                          placeholder="e.g. aly@mybrand.com / +20 1..."
+                          className="w-full bg-stone-950 border border-white/5 focus:border-[#C9A84C]/45 rounded-xl px-4 py-3 text-xs text-ivory placeholder-stone-600 focus:outline-none transition-colors"
+                        />
+                      </div>
 
-            <a 
-              href="#case-studies" 
-              className="inline-flex items-center justify-center gap-2 border border-[#FAF8F5]/10 hover:border-[#C9A84C]/30 text-[#FAF8F5]/70 text-xs font-mono tracking-widest uppercase px-5 py-3.5 rounded-full transition-all duration-305 hover:bg-white/5 active:scale-95 group"
-            >
-              <span>See Our Work →</span>
-            </a>
+                      {/* Business name input */}
+                      <div>
+                        <label className="font-mono text-[9px] text-[#FAF8F5]/40 uppercase tracking-wider block mb-1">CAFÉ, SHOP, OR STORE NAME (OPTIONAL)</label>
+                        <input 
+                          type="text"
+                          value={businessName}
+                          onChange={(e) => setBusinessName(e.target.value)}
+                          placeholder="e.g. Lotus Roastery"
+                          className="w-full bg-stone-950 border border-white/5 focus:border-[#C9A84C]/45 rounded-xl px-4 py-3 text-xs text-ivory placeholder-stone-600 focus:outline-none transition-colors"
+                        />
+                      </div>
+
+                      {/* Explicit claim button */}
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full bg-[#C9A84C] hover:bg-[#DAB85A] text-[#0D0D12] text-xs font-bold uppercase tracking-widest py-3.5 rounded-full mt-6 shadow-[0_4px_20px_rgba(201,168,76,0.25)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <span className="w-4 h-4 border-2 border-[#0D0D12] border-t-transparent rounded-full animate-spin" />
+                            <span>PROCESSING REQUEST...</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>Claim My Offer</span>
+                            <ArrowUpRight className="w-4 h-4" />
+                          </>
+                        )}
+                      </button>
+                    </form>
+                  </div>
+
+                  <span className="text-[10px] text-stone-500 font-sans text-center mt-6 block">
+                    ★ Secure 256-bit connection node. Your details are private.
+                  </span>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="claim-success"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="h-full flex flex-col justify-between text-center py-6"
+                >
+                  <div className="flex flex-col items-center">
+                    {/* Circle Success layout */}
+                    <div className="w-16 h-16 rounded-full bg-[#C9A84C]/10 border border-[#C9A84C]/30 text-[#C9A84C] flex items-center justify-center mb-6 relative">
+                      <motion.div 
+                        animate={{ scale: [1, 1.4, 1] }}
+                        transition={{ repeat: Infinity, duration: 2 }}
+                        className="absolute inset-0 bg-[#C9A84C]/5 rounded-full"
+                      />
+                      <CheckCircle2 className="w-8 h-8 relative z-10" />
+                    </div>
+
+                    <span className="font-mono text-[9px] text-[#C9A84C] uppercase tracking-[0.2em] font-bold block mb-2">
+                      RESERVATION SECURED
+                    </span>
+                    <h4 className="text-xl font-bold text-ivory tracking-tight mb-2">
+                      Congratulations, {fullName.split(' ')[0]}!
+                    </h4>
+                    <p className="text-xs text-[#FAF8F5]/60 px-2 leading-relaxed font-sans mb-4">
+                      The FREE spot is now locked under your profile code. Our director will establish contact shortly.
+                    </p>
+
+                    {/* Booking metadata display */}
+                    <div className="bg-stone-950 border border-white/5 rounded-2xl p-4 w-full text-left font-mono text-[11px] text-stone-400 space-y-2 mb-6">
+                      <div className="flex justify-between">
+                        <span>PROFILE CODE:</span>
+                        <span className="text-[#C9A84C] font-bold">{generatedCode}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>BUSINESS:</span>
+                        <span className="text-ivory truncate max-w-[150px]">{businessName || 'Not specified'}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>BONUS SPOT:</span>
+                        <span className="text-emerald-400 font-bold">FREE LOCKED</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>STATUS:</span>
+                        <span className="text-emerald-400 font-semibold animate-pulse">Awaiting Verification</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <a
+                    href={getWhatsAppURL(
+                      `Hi Avanta Team! I just verified my Premium Offer reservation with Code *${generatedCode}*. My name is ${fullName}, business is ${businessName || "Not Specified"}. Please guide me on launching our free spot!`
+                    )}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full bg-[#C9A84C] hover:bg-[#DAB85A] text-[#0D0D12] text-xs font-bold uppercase tracking-widest py-3.5 rounded-full shadow-[0_4px_20px_rgba(201,168,76,0.3)] transition-all flex items-center justify-center gap-2"
+                  >
+                    <span>Finish Setup on WhatsApp</span>
+                    <ArrowUpRight className="w-4 h-4" />
+                  </a>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
           </div>
         </div>
 
-        {/* Aesthetic Side Card Graphic / Right side of Bento for visual balance */}
-        <motion.div 
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ 
-            opacity: 1, 
-            x: 0,
-            y: [0, -6, 0],
-          }}
-          transition={{
-            opacity: { duration: 0.8 },
-            x: { duration: 0.8 },
-            y: {
-              duration: 5,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }
-          }}
-          whileHover={{ 
-            scale: 1.025,
-            borderColor: "rgba(201, 168, 76, 0.25)",
-            boxShadow: "0 25px 50px -12px rgba(201, 168, 76, 0.1)"
-          }}
-          className="relative w-full md:w-[320px] h-[310px] rounded-[2rem] bg-[#16161D] border border-[#FAF8F5]/5 p-6 flex flex-col justify-between overflow-hidden group select-none shrink-0 shadow-lg transition-all duration-300"
-        >
-          {/* Subtle gradient pattern bg */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-[#FAF8F5]/5 to-transparent pointer-events-none opacity-20" />
-          <div className="absolute bottom-[-50px] right-[-50px] w-48 h-48 rounded-full bg-[#C9A84C]/5 blur-3xl pointer-events-none" />
-          
-          <div className="flex justify-between items-center font-mono text-[9px] text-[#FAF8F5]/40 leading-none relative z-10">
-            <span>AVANTA DESIGN STUDIO</span>
-            <span className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              EST. 2026 // CAIRO
-            </span>
-          </div>
-          
-          <div className="space-y-3.5 my-auto relative z-10">
-            <div className="relative w-10 h-10">
-              {/* Radar pings */}
-              <motion.div 
-                animate={{ scale: [1, 1.8], opacity: [0.6, 0] }}
-                transition={{ repeat: Infinity, duration: 2, ease: "easeOut" }}
-                className="absolute inset-0 rounded-full bg-[#C9A84C]/20"
-              />
-              <motion.div 
-                animate={{ scale: [1, 1.8], opacity: [0.6, 0] }}
-                transition={{ repeat: Infinity, duration: 2, ease: "easeOut", delay: 1 }}
-                className="absolute inset-0 rounded-full bg-[#C9A84C]/20"
-              />
-              <div className="absolute inset-0 rounded-full bg-[#C9A84C]/10 border border-[#C9A84C]/25 flex items-center justify-center text-[#C9A84C]">
-                <Activity className="w-5 h-5 animate-pulse" />
-              </div>
+        {/* 2. LOWER TRUST BAR WITH SOCIAL PROOF & METRICS */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+          <div className="bg-gradient-to-br from-[#16161D] to-[#0D0D12] border border-[#FAF8F5]/5 rounded-2xl p-4 flex items-center gap-4 relative overflow-hidden group/metric">
+            <div className="bg-emerald-500/10 text-emerald-400 p-2.5 rounded-xl border border-emerald-500/20 shrink-0">
+              <Users className="w-4 h-4" />
             </div>
-
             <div>
-              <span className="font-mono text-[9px] text-[#C9A84C] uppercase tracking-widest block">Active Metric</span>
-              <h4 className="text-lg md:text-xl font-bold text-[#FAF8F5] leading-snug">Egypt's Premier Studio</h4>
-              <p className="text-[11px] text-[#FAF8F5]/40 leading-relaxed mt-0.5">Helping local cafes, gyms, and shops attract high-value regulars across Egypt.</p>
+              <span className="font-mono text-[9px] text-[#FAF8F5]/40 uppercase tracking-wider block">TRUST FACTOR</span>
+              <span className="text-sm font-bold text-ivory block mt-0.5">140+ Clubs &amp; Cafés</span>
             </div>
+          </div>
 
-            {/* Embedded Live Graph/Sparkline inside the card */}
-            <div className="bg-black/35 border border-[#FAF8F5]/5 rounded-xl p-2.5 relative overflow-hidden h-[54px] flex flex-col justify-end">
-              <div className="absolute top-2 left-2.5 flex items-center gap-1.5 font-mono text-[7.5px] text-[#C9A84C]">
-                <span className="w-1 h-1 rounded-full bg-[#C9A84C] animate-ping" />
-                <span>CUSTOMER CONVERSION FOCUS</span>
-              </div>
-              <svg className="w-full h-6 overflow-visible" viewBox="0 0 200 40" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="bentoChartGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.25" />
-                    <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
-                  </linearGradient>
-                </defs>
-                <motion.path
-                  d="M 0,35 Q 20,20 40,28 T 80,12 T 120,22 T 160,8 L 200,6 L 200,40 L 0,40 Z"
-                  fill="url(#bentoChartGrad)"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: [0.7, 0.9, 0.7] }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <motion.path
-                  d="M 0,35 Q 20,20 40,28 T 80,12 T 120,22 T 160,8 L 200,6"
-                  fill="none"
-                  stroke="#C9A84C"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ duration: 1.5, ease: "easeOut" }}
-                />
-                <motion.circle
-                  cx="200"
-                  cy="6"
-                  r="2.5"
-                  fill="#C9A84C"
-                  animate={{ r: [2, 3.5, 2] }}
-                  transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-                />
-              </svg>
+          <div className="bg-gradient-to-br from-[#16161D] to-[#0D0D12] border border-[#FAF8F5]/5 rounded-2xl p-4 flex items-center gap-4 relative overflow-hidden group/metric">
+            <div className="bg-[#C9A84C]/10 text-[#C9A84C] p-2.5 rounded-xl border border-C9A84C/20 shrink-0">
+              <Star className="w-4 h-4 fill-current" />
+            </div>
+            <div>
+              <span className="font-mono text-[9px] text-[#FAF8F5]/40 uppercase tracking-wider block">RATING VERIFIED</span>
+              <span className="text-sm font-bold text-ivory block mt-0.5">5-Star Excellence</span>
             </div>
           </div>
-          
-          <div className="flex justify-between items-center border-t border-[#FAF8F5]/5 pt-3 font-mono text-[9px] text-[#FAF8F5]/50 leading-none relative z-10">
-            <span>HIGH-END DESIGN</span>
-            <span className="text-[#C9A84C] font-semibold">7-DAY GUARANTEE</span>
+
+          <div className="bg-gradient-to-br from-[#16161D] to-[#0D0D12] border border-[#FAF8F5]/5 rounded-2xl p-4 flex items-center gap-4 relative overflow-hidden group/metric">
+            <div className="bg-blue-500/10 text-blue-400 p-2.5 rounded-xl border border-blue-500/20 shrink-0">
+              <ShieldCheck className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="font-mono text-[9px] text-[#FAF8F5]/40 uppercase tracking-wider block">GUARANTEED RISK</span>
+              <span className="text-sm font-bold text-ivory block mt-0.5">No Credit Card Required</span>
+            </div>
           </div>
-        </motion.div>
-      </motion.div>
+        </div>
+
+      </div>
     </section>
   );
 }
