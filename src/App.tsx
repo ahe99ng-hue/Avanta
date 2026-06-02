@@ -82,6 +82,20 @@ function StickyPromoBar() {
     return () => clearInterval(timer);
   }, []);
 
+  const handleClaimClick = () => {
+    const target = document.getElementById("claim-offer-section");
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+      // Wait for smooth scroll, then focus input field
+      setTimeout(() => {
+        const input = document.getElementById("fullname-input");
+        if (input) {
+          (input as HTMLInputElement).focus();
+        }
+      }, 600);
+    }
+  };
+
   return (
     <div className="fixed top-0 left-0 w-full z-[100] bg-gradient-to-r from-[#C9A84C] via-[#FAF8F5] to-[#C9A84C] text-[#0D0D12] shadow-[0_4px_25px_rgba(201,168,76,0.35)] flex items-center justify-between px-3 md:px-6 py-2.5 transition-all duration-300">
       <div className="flex-1 flex items-center justify-center gap-2 md:gap-4 text-center overflow-hidden">
@@ -96,12 +110,12 @@ function StickyPromoBar() {
           </span>
         </div>
       </div>
-      <a 
-        href="#claim-offer-section" 
-        className="bg-[#0D0D12] text-[#C9A84C] hover:bg-stone-900 hover:text-white font-sans text-[8px] md:text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full transition-all active:scale-95 leading-none shrink-0"
+      <button 
+        onClick={handleClaimClick}
+        className="bg-[#0D0D12] text-[#C9A84C] hover:bg-stone-900 hover:text-white font-sans text-[8px] md:text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full transition-all active:scale-95 leading-none shrink-0 cursor-pointer"
       >
         Claim Spot
-      </a>
+      </button>
     </div>
   );
 }
@@ -343,6 +357,17 @@ function HeroSection({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => str
     return () => clearInterval(timer);
   }, []);
 
+  // Auto-redirect to WhatsApp upon successful reservation setup
+  useEffect(() => {
+    if (isSuccess && generatedCode) {
+      const waMessage = `Hi Avanta Team! I just verified my Premium Offer reservation with Code *${generatedCode}*. My name is ${fullName}, business is ${businessName || "Not Specified"}. Please guide me on launching our free spot!`;
+      const redirectTimer = setTimeout(() => {
+        window.location.href = getWhatsAppURL(waMessage);
+      }, 2000); // 2 seconds delay to allow reading the success code
+      return () => clearTimeout(redirectTimer);
+    }
+  }, [isSuccess, generatedCode, fullName, businessName, getWhatsAppURL]);
+
   // Simulating live spot reservation after 12 seconds
   useEffect(() => {
     const spotTimer = setTimeout(() => {
@@ -529,6 +554,7 @@ function HeroSection({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => str
                         <label className="font-mono text-[9px] text-[#FAF8F5]/40 uppercase tracking-wider block mb-1">YOUR FULL NAME *</label>
                         <input 
                           type="text"
+                          id="fullname-input"
                           required
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
@@ -612,8 +638,12 @@ function HeroSection({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => str
                     <h4 className="text-xl font-bold text-ivory tracking-tight mb-2">
                       Congratulations, {fullName.split(' ')[0]}!
                     </h4>
-                    <p className="text-xs text-[#FAF8F5]/60 px-2 leading-relaxed font-sans mb-4">
+                    <p className="text-xs text-[#FAF8F5]/60 px-2 leading-relaxed font-sans mb-1">
                       The FREE spot is now locked under your profile code. Our director will establish contact shortly.
+                    </p>
+                    <p className="text-[11px] font-bold text-emerald-400 px-2 leading-relaxed font-sans mb-4 animate-pulse flex items-center justify-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                      <span>Redirecting you to WhatsApp in 2 seconds...</span>
                     </p>
 
                     {/* Booking metadata display */}
