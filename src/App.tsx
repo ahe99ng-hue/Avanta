@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect, useRef, FormEvent } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Paintbrush, 
@@ -31,7 +31,6 @@ import {
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import terraSkincareImg from './assets/images/terra_skincare_product_1780248943433.png';
 
 // Register GSAP plugins
 if (typeof window !== 'undefined') {
@@ -50,74 +49,6 @@ interface CaseStudy {
   isReal: boolean;
   link: string;
   stats: string;
-}
-
-// Helper to compute remaining local time until 12:00 AM midnight tonight
-function getRemainingTimeUntilMidnight() {
-  const now = new Date();
-  const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
-  const diffMs = midnight.getTime() - now.getTime();
-  
-  if (diffMs <= 0) {
-    return { hours: 0, minutes: 0, seconds: 0 };
-  }
-  
-  const hours = Math.floor(diffMs / (1000 * 60 * 60));
-  const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
-  
-  return { hours, minutes, seconds };
-}
-
-// -------------------------------------------------------------
-// COMPONENT: StickyPromoBar
-// -------------------------------------------------------------
-function StickyPromoBar() {
-  const [timeLeft, setTimeLeft] = useState(getRemainingTimeUntilMidnight());
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(getRemainingTimeUntilMidnight());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleClaimClick = () => {
-    const target = document.getElementById("claim-offer-section");
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
-      // Wait for smooth scroll, then focus input field
-      setTimeout(() => {
-        const input = document.getElementById("fullname-input");
-        if (input) {
-          (input as HTMLInputElement).focus();
-        }
-      }, 600);
-    }
-  };
-
-  return (
-    <div className="fixed top-0 left-0 w-full z-[100] bg-gradient-to-r from-[#C9A84C] via-[#FAF8F5] to-[#C9A84C] text-[#0D0D12] shadow-[0_4px_25px_rgba(201,168,76,0.35)] flex items-center justify-between px-3 md:px-6 py-2.5 transition-all duration-300">
-      <div className="flex-1 flex items-center justify-center gap-2 md:gap-4 text-center overflow-hidden">
-        <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse shrink-0 hidden xs:inline-block" />
-        <p className="font-mono text-[9px] md:text-xs font-bold uppercase tracking-wider leading-none truncate">
-          <span className="inline md:hidden">⚡ LIMITED OFFER: FREE SPOT (ENDS AT 12:00 AM)</span>
-          <span className="hidden md:inline">⚡ LIMITED-TIME PROMO: UPGRADE TO PREMIUM &amp; GET A FREE SPOT (ENDS AT 12:00 AM TONIGHT)</span>
-        </p>
-        <div className="flex items-center gap-1 bg-[#0D0D12]/10 border border-[#0D0D12]/20 px-2 py-0.5 rounded-md shrink-0">
-          <span className="font-mono text-[10px] md:text-[11px] font-extrabold text-[#0D0D12] tracking-wider leading-none">
-            {String(timeLeft.hours).padStart(2, '0')}:{String(timeLeft.minutes).padStart(2, '0')}:{String(timeLeft.seconds).padStart(2, '0')}
-          </span>
-        </div>
-      </div>
-      <button 
-        onClick={handleClaimClick}
-        className="bg-[#0D0D12] text-[#C9A84C] hover:bg-stone-900 hover:text-white font-sans text-[8px] md:text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full transition-all active:scale-95 leading-none shrink-0 cursor-pointer"
-      >
-        Claim Spot
-      </button>
-    </div>
-  );
 }
 
 // -------------------------------------------------------------
@@ -145,41 +76,38 @@ export default function App() {
   const caseStudies: CaseStudy[] = [
     {
       title: "Jimmy's Coffee",
-      category: "Alexandria Specialty Café",
-      tagline: "Building a beautiful look and brand to help Alexandria's favorite cafe get more weekend customers.",
+      category: "Artisanal Specialty Café",
+      tagline: "Bridging architectural design with authentic roasting to build Alexandria's premier weekend spot.",
       image: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&q=80&w=800",
       logoText: "JIMMY'S",
       isReal: true,
       link: "https://jimmycoffee.netlify.app/",
-      stats: "Alexandria's Premier Spot · Brand Design"
+      stats: "+240% Engagement · First Visual Kit"
     },
     {
       title: "Volt Gym",
-      category: "Nile Fitness Club",
-      tagline: "Helping a premium gym attract new members with a clean, high-end design that stands out locally.",
+      category: "Hyper-Luxury Fitness Club",
+      tagline: "Bold typography meets raw carbon steel graphics to attract members ready to invest in performance.",
       image: "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&q=80&w=800",
       logoText: "VOLT.",
       isReal: false,
       link: "#",
-      stats: "Premium Cairo Gym · Design Style"
+      stats: "Elite Identity Concept"
     },
     {
       title: "Terra Skincare",
-      category: "Local Skincare Shop",
-      tagline: "Helping an organic skincare brand look professional and trustworthy so customers can book services easily.",
-      image: terraSkincareImg,
+      category: "Organic Botanical Aesthetics",
+      tagline: "Earthy, minimal color spaces and high-trust editorial layouts designed to guide clients directly to booking.",
+      image: "/src/assets/images/terra_skincare_product_1780248943433.png",
       logoText: "TERRA",
       isReal: false,
       link: "#",
-      stats: "Organic Skincare Brand · Design Style"
+      stats: "Creative Concept"
     },
   ];
 
   return (
-    <div className="relative min-h-screen selection:bg-champagne selection:text-obsidian overflow-hidden pt-11 md:pt-12">
-      {/* Dynamic top-bar for Limited-Time Offer */}
-      <StickyPromoBar />
-
+    <div className="relative min-h-screen selection:bg-champagne selection:text-obsidian overflow-hidden">
       {/* 0. Noise overlay filter at ~0.05 opacity to eliminate flat gradients */}
       <div className="noise-overlay" />
 
@@ -199,13 +127,13 @@ export default function App() {
           {/* Header */}
           <div className="mb-16 md:mb-24 text-center max-w-3xl mx-auto">
             <span className="font-mono text-xs text-champagne uppercase tracking-[0.25em] block mb-4">
-              [ Our Services ]
+              [ Bespoke Solutions ]
             </span>
             <h2 className="text-3xl md:text-5xl font-sans tracking-tight text-ivory font-semibold mb-6">
-              Three ways we help your local business <span className="font-serif italic text-champagne font-medium">attract more customers</span>.
+              Three pillars designed to make your local business <span className="font-serif italic text-champagne font-medium">dominate</span>.
             </h2>
             <p className="text-slate-custom/80 font-sans text-sm md:text-base leading-relaxed">
-              We make the process simple. We design high-end websites and brands that make you stand out locally, build instant trust, and get clients calling.
+              We eliminate typical freelance noise. Our deliverables are engineered software artifacts, calibrated visually to build instant prestige for local commerce.
             </p>
           </div>
 
@@ -248,7 +176,7 @@ function Navbar({ scrolled, getWhatsAppURL }: { scrolled: boolean; getWhatsAppUR
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className={`fixed ${scrolled ? 'top-12' : 'top-[52px] md:top-[60px]'} left-0 w-full z-50 px-4 transition-all duration-300`}>
+    <header className="fixed top-6 left-0 w-full z-50 px-4 transition-all duration-300">
       <div 
         className={`mx-auto max-w-5xl rounded-full transition-all duration-500 border ${
           scrolled 
@@ -278,7 +206,8 @@ function Navbar({ scrolled, getWhatsAppURL }: { scrolled: boolean; getWhatsAppUR
             rel="noreferrer"
             className="hidden sm:inline-flex items-center gap-2 bg-[#C9A84C] text-[#0D0D12] text-xs font-bold uppercase tracking-wider px-6 py-2.5 rounded-full hover:scale-105 transition-transform"
           >
-            <span>Talk on WhatsApp →</span>
+            <span>Start on WhatsApp</span>
+            <ArrowUpRight className="w-3.5 h-3.5" />
           </a>
 
           {/* Hamburger Menu Icon */}
@@ -319,7 +248,8 @@ function Navbar({ scrolled, getWhatsAppURL }: { scrolled: boolean; getWhatsAppUR
               onClick={() => setMobileMenuOpen(false)}
               className="flex items-center justify-center gap-2 bg-[#C9A84C] text-[#0D0D12] text-xs font-bold uppercase tracking-wider py-3.5 rounded-full transition-all duration-300 hover:scale-105"
             >
-              <span>Talk on WhatsApp →</span>
+              <span>SEND A MESSAGE</span>
+              <MessageSquare className="w-4 h-4" />
             </a>
           </motion.div>
         )}
@@ -333,392 +263,209 @@ function Navbar({ scrolled, getWhatsAppURL }: { scrolled: boolean; getWhatsAppUR
 // -------------------------------------------------------------
 function HeroSection({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => string }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  
-  // 1. Countdown Timer State for Urgency (Targeting exactly 12:00 AM local time midnight)
-  const [timeLeft, setTimeLeft] = useState(getRemainingTimeUntilMidnight());
-  
-  // 2. Spots Scarcity State (Simulates a real-time spot being claimed to drive massive action)
-  const [spotsClaimed, setSpotsClaimed] = useState(7);
-  const [spotClaimedNotification, setSpotClaimedNotification] = useState(false);
 
-  // 3. Form States
-  const [fullName, setFullName] = useState('');
-  const [contactInfo, setContactInfo] = useState('');
-  const [businessName, setBusinessName] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [generatedCode, setGeneratedCode] = useState('');
-
-  // Urgency Timer Effect (Synchronized local midnight timer)
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(getRemainingTimeUntilMidnight());
-    }, 1000);
-    return () => clearInterval(timer);
+    // Elegant Entrance Animation using GSAP
+    const elements = gsap.utils.toArray('.hero-fade-up');
+    gsap.fromTo(elements, 
+      { y: 50, opacity: 0 }, 
+      { y: 0, opacity: 1, duration: 1.2, ease: "power4.out", stagger: 0.15 }
+    );
   }, []);
-
-  // Auto-redirect to WhatsApp upon successful reservation setup
-  useEffect(() => {
-    if (isSuccess && generatedCode) {
-      const waMessage = `Hi Avanta Team! I just verified my Premium Offer reservation with Code *${generatedCode}*. My name is ${fullName}, business is ${businessName || "Not Specified"}. Please guide me on launching our free spot!`;
-      const redirectTimer = setTimeout(() => {
-        window.location.href = getWhatsAppURL(waMessage);
-      }, 2000); // 2 seconds delay to allow reading the success code
-      return () => clearTimeout(redirectTimer);
-    }
-  }, [isSuccess, generatedCode, fullName, businessName, getWhatsAppURL]);
-
-  // Simulating live spot reservation after 12 seconds
-  useEffect(() => {
-    const spotTimer = setTimeout(() => {
-      setSpotsClaimed(8);
-      setSpotClaimedNotification(true);
-      // Fade out notification after 4 seconds
-      setTimeout(() => setSpotClaimedNotification(false), 4000);
-    }, 12000);
-
-    // Another simulated spot after 45 seconds
-    const spotTimerTwo = setTimeout(() => {
-      setSpotsClaimed(9);
-      setSpotClaimedNotification(true);
-      setTimeout(() => setSpotClaimedNotification(false), 4000);
-    }, 45000);
-
-    return () => {
-      clearTimeout(spotTimer);
-      clearTimeout(spotTimerTwo);
-    };
-  }, []);
-
-  const handleClaimSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!fullName || !contactInfo) return;
-
-    setIsSubmitting(true);
-    
-    // Simulate premium verification and validation
-    setTimeout(() => {
-      const randomCode = `AV-PREM-${Math.floor(1000 + Math.random() * 9000)}`;
-      setGeneratedCode(randomCode);
-      setIsSubmitting(false);
-      setIsSuccess(true);
-    }, 1200);
-  };
 
   return (
     <section 
       ref={containerRef}
-      id="claim-offer-section"
-      className="relative min-h-[100dvh] w-full flex flex-col justify-center items-center py-28 md:py-36 px-4 z-20 scroll-mt-20"
+      className="relative min-h-[100dvh] w-full flex flex-col justify-center items-center py-28 px-4 z-20"
     >
-      {/* Background patterns */}
+      {/* Dynamic line matrix background */}
       <div className="absolute inset-0 bg-[#0D0D12] z-0" />
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(201,168,76,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(201,168,76,0.015)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none z-0" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(201,168,76,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(201,168,76,0.01)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none z-0" />
 
-      {/* Exclusivity banner floating container */}
-      <div className="w-full max-w-5xl relative z-10 flex flex-col gap-8 md:gap-10">
-        
-        {/* Urgent Live Pulse Toast Notification */}
-        <AnimatePresence>
-          {spotClaimedNotification && (
-            <motion.div 
-              initial={{ opacity: 0, y: -20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.95 }}
-              className="absolute -top-16 left-1/2 -translate-x-1/2 bg-[#C9A84C] text-[#0D0D12] font-mono text-[11px] font-bold py-2 px-5 rounded-full shadow-[0_10px_30px_rgba(201,168,76,0.3)] z-50 flex items-center gap-2"
+      <motion.div 
+        initial={{ opacity: 0, y: 40, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        whileHover={{ y: -4, transition: { duration: 0.3 } }}
+        className="w-full max-w-5xl bg-gradient-to-br from-[#1A1A24] via-[#13131A] to-[#0D0D12] border border-[#FAF8F5]/5 rounded-[2.5rem] p-8 md:p-14 relative overflow-hidden shadow-2xl flex flex-col md:flex-row gap-12 items-center group/hero-bento transition-all duration-500"
+      >
+        {/* Dynamic ambient gold glowing orb */}
+        <motion.div 
+          animate={{
+            scale: [1, 1.2, 0.9, 1.15, 1],
+            x: [0, 50, -40, 25, 0],
+            y: [0, -30, 45, -15, 0],
+            opacity: [0.03, 0.08, 0.04, 0.09, 0.03]
+          }}
+          transition={{
+            duration: 16,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="absolute -top-12 -left-12 w-[400px] h-[400px] rounded-full bg-[#C9A84C]/25 blur-[100px] pointer-events-none select-none z-0"
+        />
+
+        {/* Aesthetic geometric watermark from Bento design with slow continuous rotation */}
+        <motion.div 
+          animate={{ rotate: 360 }}
+          transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
+          className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none select-none origin-center"
+        >
+          <svg width="240" height="240" viewBox="0 0 100 100" className="fill-[#C9A84C]">
+            <path d="M50 0 L100 50 L50 100 L0 50 Z" />
+          </svg>
+        </motion.div>
+
+        <div className="relative z-10 flex-1 flex flex-col items-start text-left select-none">
+          {/* Subtle Accent Intro Badge */}
+          <div className="hero-fade-up inline-flex items-center gap-2 bg-[#C9A84C]/10 border border-[#C9A84C]/20 rounded-full px-4 py-1.5 mb-6">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#C9A84C] animate-pulse" />
+            <span className="font-mono text-[10px] md:text-xs text-[#FAF8F5]/80 uppercase tracking-widest font-normal">
+              Protocol v2.0 // Brand Studio
+            </span>
+          </div>
+
+          {/* Headline following "[Aspirational noun] meets / [Precision word]." pattern */}
+          <h1 className="hero-fade-up text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-sans font-semibold text-[#FAF8F5] tracking-tight leading-[0.95] text-left">
+            Local business <br />
+            <span className="font-serif italic text-[#C9A84C] block mt-1">Meets Legend.</span>
+          </h1>
+
+          {/* Value Proposition Description */}
+          <p className="hero-fade-up font-sans text-[#FAF8F5]/60 text-sm md:text-base font-light leading-relaxed max-w-lg mt-6">
+            We build complete brand systems for small businesses that want to look like world-class leaders. From $250. Delivered in 10 days.
+          </p>
+
+          {/* CTA Actions */}
+          <div className="hero-fade-up flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mt-8 w-full sm:w-auto">
+            <a 
+              href={getWhatsAppURL("Hi Avanta! I saw the home page and I want a full transformation for my business.")}
+              target="_blank" 
+              rel="noreferrer"
+              className="inline-flex items-center justify-center gap-2 bg-[#C9A84C] text-[#0D0D12] text-xs font-bold uppercase tracking-wider px-6 py-3.5 rounded-full hover:scale-105 transition-transform"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping" />
-              <span>ALERT: Another Cairo business just lock-in their spot. {10 - spotsClaimed} remaining!</span>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <span>SECURE ARCHETYPE SYSTEM</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </a>
 
-        {/* 1. HERO MAIN CARD (BENTO BOX) */}
-        <div className="w-full bg-gradient-to-br from-[#1C1C26] via-[#121219] to-[#0A0A0E] border border-[#FAF8F5]/5 rounded-[2.5rem] p-6 sm:p-8 md:p-14 relative overflow-hidden shadow-2xl flex flex-col lg:flex-row gap-10 lg:gap-12 items-stretch group/hero-bento transition-all duration-500">
+            <a 
+              href="#services" 
+              className="inline-flex items-center justify-center gap-2 border border-[#FAF8F5]/10 hover:border-[#C9A84C]/30 text-[#FAF8F5]/70 text-xs font-mono tracking-widest uppercase px-5 py-3.5 rounded-full transition-all duration-305 hover:bg-white/5 active:scale-95 group"
+            >
+              <span>EXPLORE SERVICES</span>
+              <ArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
+            </a>
+          </div>
+        </div>
+
+        {/* Aesthetic Side Card Graphic / Right side of Bento for visual balance */}
+        <motion.div 
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ 
+            opacity: 1, 
+            x: 0,
+            y: [0, -6, 0],
+          }}
+          transition={{
+            opacity: { duration: 0.8 },
+            x: { duration: 0.8 },
+            y: {
+              duration: 5,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }
+          }}
+          whileHover={{ 
+            scale: 1.025,
+            borderColor: "rgba(201, 168, 76, 0.25)",
+            boxShadow: "0 25px 50px -12px rgba(201, 168, 76, 0.1)"
+          }}
+          className="relative w-full md:w-[320px] h-[310px] rounded-[2rem] bg-[#16161D] border border-[#FAF8F5]/5 p-6 flex flex-col justify-between overflow-hidden group select-none shrink-0 shadow-lg transition-all duration-300"
+        >
+          {/* Subtle gradient pattern bg */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#FAF8F5]/5 to-transparent pointer-events-none opacity-20" />
+          <div className="absolute bottom-[-50px] right-[-50px] w-48 h-48 rounded-full bg-[#C9A84C]/5 blur-3xl pointer-events-none" />
           
-          {/* Dynamic ambient gold glowing orbs */}
-          <div className="absolute -top-24 -left-24 w-[350px] h-[350px] rounded-full bg-[#C9A84C]/10 blur-[100px] pointer-events-none select-none z-0" />
-          <div className="absolute -bottom-24 -right-24 w-[350px] h-[350px] rounded-full bg-[#C9A84C]/5 blur-[100px] pointer-events-none select-none z-0" />
-
-          {/* Left Text & Highlight Content */}
-          <div className="flex-1 flex flex-col justify-between relative z-10">
-            <div>
-              {/* Limited Time Offer badge */}
-              <div className="inline-flex items-center gap-2 bg-[#C9A84C]/15 border border-[#C9A84C]/35 rounded-full px-4 py-1.5 mb-6">
-                <Sparkles className="w-3.5 h-3.5 text-[#C9A84C] animate-spin" />
-                <span className="font-mono text-[10px] md:text-xs text-[#C9A84C] uppercase tracking-[0.2em] font-semibold">
-                  LIMITED TIME EXCLUSIVE OFFER
-                </span>
-                <span className="w-1.5 h-1.5 rounded-full bg-[#C9A84C] animate-pulse" />
-              </div>
-
-              {/* suggested Headline */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-sans font-semibold text-[#FAF8F5] tracking-tight leading-[1.1]">
-                Upgrade to Premium <br className="hidden sm:inline" />
-                <span className="font-serif italic text-[#C9A84C] mt-2 block">&amp; Get a FREE Spot.</span>
-              </h1>
-
-              {/* suggested Subheadline */}
-              <p className="font-sans text-[#FAF8F5]/70 text-sm md:text-base font-light leading-relaxed max-w-xl mt-6">
-                For a limited time, every Premium membership includes a free spot at no extra cost. Secure your place before the offer ends and expand your reach instantly.
-              </p>
-
-              {/* Value list items */}
-              <div className="mt-8 space-y-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-5 h-5 rounded-full bg-[#C9A84C]/10 flex items-center justify-center text-[#C9A84C] shrink-0 border border-[#C9A84C]/25">
-                    <Check className="w-3.5 h-3.5" />
-                  </div>
-                  <span className="text-xs md:text-sm text-[#FAF8F5]/80 font-sans">
-                    <strong>Include an Extra Partner</strong> completely free (Value of $150+)
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-5 h-5 rounded-full bg-[#C9A84C]/10 flex items-center justify-center text-[#C9A84C] shrink-0 border border-[#C9A84C]/25">
-                    <Check className="w-3.5 h-3.5" />
-                  </div>
-                  <span className="text-xs md:text-sm text-[#FAF8F5]/80 font-sans">
-                    <strong>Egypt's Premier Brand Strategy</strong> &amp; high-converting architecture
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-5 h-5 rounded-full bg-[#C9A84C]/10 flex items-center justify-center text-[#C9A84C] shrink-0 border border-[#C9A84C]/25">
-                    <Check className="w-3.5 h-3.5" />
-                  </div>
-                  <span className="text-xs md:text-sm text-[#FAF8F5]/80 font-sans">
-                    <strong>100% Satisfaction Guarantee</strong> with custom live WhatsApp status support
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Urgency Indicators Grid (Timer + Spots remaining) */}
-            <div className="mt-10 pt-8 border-t border-[#FAF8F5]/5 grid grid-cols-2 gap-4">
-              {/* Urgency 1: Countdown Clock */}
-              <div className="bg-[#14141E] border border-white/5 rounded-2xl p-4 flex flex-col justify-center">
-                <span className="font-mono text-[9px] text-[#C9A84C] uppercase tracking-widest block mb-2">OFFER EXPIRES IN</span>
-                <div className="flex items-baseline gap-1 font-mono text-lg md:text-xl font-bold text-ivory tracking-wider">
-                  <span>{String(timeLeft.hours).padStart(2, '0')}</span>
-                  <span className="text-[#C9A84C] animate-pulse">:</span>
-                  <span>{String(timeLeft.minutes).padStart(2, '0')}</span>
-                  <span className="text-[#C9A84C] animate-pulse">:</span>
-                  <span className="text-[#C9A84C]/80">{String(timeLeft.seconds).padStart(2, '0')}</span>
-                </div>
-                <span className="font-sans text-[9px] text-[#FAF8F5]/40 mt-1">Strict time limitation</span>
-              </div>
-
-              {/* Urgency 2: Spots claiming tracker */}
-              <div className="bg-[#14141E] border border-white/5 rounded-2xl p-4 flex flex-col justify-center">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="font-mono text-[9px] text-red-400 uppercase tracking-widest font-semibold">URGENCY RADAR</span>
-                  <span className="font-mono text-[10px] text-ivory font-bold">{10 - spotsClaimed} Left</span>
-                </div>
-                {/* Custom glowing progress bar */}
-                <div className="w-full h-2 bg-stone-900 rounded-full overflow-hidden border border-white/5 relative mt-1">
-                  <div 
-                    className="h-full bg-gradient-to-r from-red-500 to-[#C9A84C] rounded-full transition-all duration-1000"
-                    style={{ width: `${spotsClaimed * 10}%` }}
-                  />
-                </div>
-                <span className="font-sans text-[9px] text-[#FAF8F5]/40 mt-2">
-                  {spotsClaimed}/10 Premium places claimed
-                </span>
-              </div>
-            </div>
+          <div className="flex justify-between items-center font-mono text-[9px] text-[#FAF8F5]/40 leading-none relative z-10">
+            <span>AVANTA CONVERGENCE NODE</span>
+            <span className="flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              EST. 2026 // CAIRO
+            </span>
           </div>
+          
+          <div className="space-y-3.5 my-auto relative z-10">
+            <div className="relative w-10 h-10">
+              {/* Radar pings */}
+              <motion.div 
+                animate={{ scale: [1, 1.8], opacity: [0.6, 0] }}
+                transition={{ repeat: Infinity, duration: 2, ease: "easeOut" }}
+                className="absolute inset-0 rounded-full bg-[#C9A84C]/20"
+              />
+              <motion.div 
+                animate={{ scale: [1, 1.8], opacity: [0.6, 0] }}
+                transition={{ repeat: Infinity, duration: 2, ease: "easeOut", delay: 1 }}
+                className="absolute inset-0 rounded-full bg-[#C9A84C]/20"
+              />
+              <div className="absolute inset-0 rounded-full bg-[#C9A84C]/10 border border-[#C9A84C]/25 flex items-center justify-center text-[#C9A84C]">
+                <Activity className="w-5 h-5 animate-pulse" />
+              </div>
+            </div>
 
-          {/* Right Column: Premium Sign-up / Claim Form with animations */}
-          <div className="w-full lg:w-[380px] bg-[#14141C] border border-[#FAF8F5]/5 rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-lg relative min-h-[420px] shrink-0">
-            
-            <AnimatePresence mode="wait">
-              {!isSuccess ? (
-                <motion.div
-                  key="claim-form"
+            <div>
+              <span className="font-mono text-[9px] text-[#C9A84C] uppercase tracking-widest block">Active Metric</span>
+              <h4 className="text-lg md:text-xl font-bold text-[#FAF8F5] leading-snug">99.8% Client Retention</h4>
+              <p className="text-[11px] text-[#FAF8F5]/40 leading-relaxed mt-0.5">Local businesses transformed across Egypt and online nodes.</p>
+            </div>
+
+            {/* Embedded Live Graph/Sparkline inside the card */}
+            <div className="bg-black/35 border border-[#FAF8F5]/5 rounded-xl p-2.5 relative overflow-hidden h-[54px] flex flex-col justify-end">
+              <div className="absolute top-2 left-2.5 flex items-center gap-1.5 font-mono text-[7.5px] text-[#C9A84C]">
+                <span className="w-1 h-1 rounded-full bg-[#C9A84C] animate-ping" />
+                <span>REALTIME METRIC STREAM</span>
+              </div>
+              <svg className="w-full h-6 overflow-visible" viewBox="0 0 200 40" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="bentoChartGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#C9A84C" stopOpacity="0.25" />
+                    <stop offset="100%" stopColor="#C9A84C" stopOpacity="0" />
+                  </linearGradient>
+                </defs>
+                <motion.path
+                  d="M 0,35 Q 20,20 40,28 T 80,12 T 120,22 T 160,8 L 200,6 L 200,40 L 0,40 Z"
+                  fill="url(#bentoChartGrad)"
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="h-full flex flex-col justify-between"
-                >
-                  <div>
-                    <h3 className="text-xl font-bold font-sans text-[#FAF8F5] tracking-tight mb-2 flex items-center gap-2">
-                      <Zap className="w-4 h-4 text-[#C9A84C] fill-current" />
-                      <span>Lock-In Your Promo</span>
-                    </h3>
-                    <p className="text-xs text-[#FAF8F5]/50 leading-relaxed font-sans mb-6">
-                      No credit card required. Instantly reserve your premium spot and get the extra seats included today.
-                    </p>
-
-                    <form onSubmit={handleClaimSubmit} className="space-y-4">
-                      {/* Name input */}
-                      <div>
-                        <label className="font-mono text-[9px] text-[#FAF8F5]/40 uppercase tracking-wider block mb-1">YOUR FULL NAME *</label>
-                        <input 
-                          type="text"
-                          id="fullname-input"
-                          required
-                          value={fullName}
-                          onChange={(e) => setFullName(e.target.value)}
-                          placeholder="e.g. Aly Ibrahim"
-                          className="w-full bg-stone-950 border border-white/5 focus:border-[#C9A84C]/45 rounded-xl px-4 py-3 text-xs text-ivory placeholder-stone-600 focus:outline-none transition-colors"
-                        />
-                      </div>
-
-                      {/* Contact input */}
-                      <div>
-                        <label className="font-mono text-[9px] text-[#FAF8F5]/40 uppercase tracking-wider block mb-1">EMAIL OR WHATSAPP NUMBER *</label>
-                        <input 
-                          type="text"
-                          required
-                          value={contactInfo}
-                          onChange={(e) => setContactInfo(e.target.value)}
-                          placeholder="e.g. aly@mybrand.com / +20 1..."
-                          className="w-full bg-stone-950 border border-white/5 focus:border-[#C9A84C]/45 rounded-xl px-4 py-3 text-xs text-ivory placeholder-stone-600 focus:outline-none transition-colors"
-                        />
-                      </div>
-
-                      {/* Business name input */}
-                      <div>
-                        <label className="font-mono text-[9px] text-[#FAF8F5]/40 uppercase tracking-wider block mb-1">CAFÉ, SHOP, OR STORE NAME (OPTIONAL)</label>
-                        <input 
-                          type="text"
-                          value={businessName}
-                          onChange={(e) => setBusinessName(e.target.value)}
-                          placeholder="e.g. Lotus Roastery"
-                          className="w-full bg-stone-950 border border-white/5 focus:border-[#C9A84C]/45 rounded-xl px-4 py-3 text-xs text-ivory placeholder-stone-600 focus:outline-none transition-colors"
-                        />
-                      </div>
-
-                      {/* Explicit claim button */}
-                      <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="w-full bg-[#C9A84C] hover:bg-[#DAB85A] text-[#0D0D12] text-xs font-bold uppercase tracking-widest py-3.5 rounded-full mt-6 shadow-[0_4px_20px_rgba(201,168,76,0.25)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
-                      >
-                        {isSubmitting ? (
-                          <>
-                            <span className="w-4 h-4 border-2 border-[#0D0D12] border-t-transparent rounded-full animate-spin" />
-                            <span>PROCESSING REQUEST...</span>
-                          </>
-                        ) : (
-                          <>
-                            <span>Claim My Offer</span>
-                            <ArrowUpRight className="w-4 h-4" />
-                          </>
-                        )}
-                      </button>
-                    </form>
-                  </div>
-
-                  <span className="text-[10px] text-stone-500 font-sans text-center mt-6 block">
-                    ★ Secure 256-bit connection node. Your details are private.
-                  </span>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="claim-success"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="h-full flex flex-col justify-between text-center py-6"
-                >
-                  <div className="flex flex-col items-center">
-                    {/* Circle Success layout */}
-                    <div className="w-16 h-16 rounded-full bg-[#C9A84C]/10 border border-[#C9A84C]/30 text-[#C9A84C] flex items-center justify-center mb-6 relative">
-                      <motion.div 
-                        animate={{ scale: [1, 1.4, 1] }}
-                        transition={{ repeat: Infinity, duration: 2 }}
-                        className="absolute inset-0 bg-[#C9A84C]/5 rounded-full"
-                      />
-                      <CheckCircle2 className="w-8 h-8 relative z-10" />
-                    </div>
-
-                    <span className="font-mono text-[9px] text-[#C9A84C] uppercase tracking-[0.2em] font-bold block mb-2">
-                      RESERVATION SECURED
-                    </span>
-                    <h4 className="text-xl font-bold text-ivory tracking-tight mb-2">
-                      Congratulations, {fullName.split(' ')[0]}!
-                    </h4>
-                    <p className="text-xs text-[#FAF8F5]/60 px-2 leading-relaxed font-sans mb-1">
-                      The FREE spot is now locked under your profile code. Our director will establish contact shortly.
-                    </p>
-                    <p className="text-[11px] font-bold text-emerald-400 px-2 leading-relaxed font-sans mb-4 animate-pulse flex items-center justify-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                      <span>Redirecting you to WhatsApp in 2 seconds...</span>
-                    </p>
-
-                    {/* Booking metadata display */}
-                    <div className="bg-stone-950 border border-white/5 rounded-2xl p-4 w-full text-left font-mono text-[11px] text-stone-400 space-y-2 mb-6">
-                      <div className="flex justify-between">
-                        <span>PROFILE CODE:</span>
-                        <span className="text-[#C9A84C] font-bold">{generatedCode}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>BUSINESS:</span>
-                        <span className="text-ivory truncate max-w-[150px]">{businessName || 'Not specified'}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>BONUS SPOT:</span>
-                        <span className="text-emerald-400 font-bold">FREE LOCKED</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>STATUS:</span>
-                        <span className="text-emerald-400 font-semibold animate-pulse">Awaiting Verification</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <a
-                    href={getWhatsAppURL(
-                      `Hi Avanta Team! I just verified my Premium Offer reservation with Code *${generatedCode}*. My name is ${fullName}, business is ${businessName || "Not Specified"}. Please guide me on launching our free spot!`
-                    )}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="w-full bg-[#C9A84C] hover:bg-[#DAB85A] text-[#0D0D12] text-xs font-bold uppercase tracking-widest py-3.5 rounded-full shadow-[0_4px_20px_rgba(201,168,76,0.3)] transition-all flex items-center justify-center gap-2"
-                  >
-                    <span>Finish Setup on WhatsApp</span>
-                    <ArrowUpRight className="w-4 h-4" />
-                  </a>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-          </div>
-        </div>
-
-        {/* 2. LOWER TRUST BAR WITH SOCIAL PROOF & METRICS */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-          <div className="bg-gradient-to-br from-[#16161D] to-[#0D0D12] border border-[#FAF8F5]/5 rounded-2xl p-4 flex items-center gap-4 relative overflow-hidden group/metric">
-            <div className="bg-emerald-500/10 text-emerald-400 p-2.5 rounded-xl border border-emerald-500/20 shrink-0">
-              <Users className="w-4 h-4" />
-            </div>
-            <div>
-              <span className="font-mono text-[9px] text-[#FAF8F5]/40 uppercase tracking-wider block">TRUST FACTOR</span>
-              <span className="text-sm font-bold text-ivory block mt-0.5">140+ Clubs &amp; Cafés</span>
+                  animate={{ opacity: [0.7, 0.9, 0.7] }}
+                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <motion.path
+                  d="M 0,35 Q 20,20 40,28 T 80,12 T 120,22 T 160,8 L 200,6"
+                  fill="none"
+                  stroke="#C9A84C"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.5, ease: "easeOut" }}
+                />
+                <motion.circle
+                  cx="200"
+                  cy="6"
+                  r="2.5"
+                  fill="#C9A84C"
+                  animate={{ r: [2, 3.5, 2] }}
+                  transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                />
+              </svg>
             </div>
           </div>
-
-          <div className="bg-gradient-to-br from-[#16161D] to-[#0D0D12] border border-[#FAF8F5]/5 rounded-2xl p-4 flex items-center gap-4 relative overflow-hidden group/metric">
-            <div className="bg-[#C9A84C]/10 text-[#C9A84C] p-2.5 rounded-xl border border-C9A84C/20 shrink-0">
-              <Star className="w-4 h-4 fill-current" />
-            </div>
-            <div>
-              <span className="font-mono text-[9px] text-[#FAF8F5]/40 uppercase tracking-wider block">RATING VERIFIED</span>
-              <span className="text-sm font-bold text-ivory block mt-0.5">5-Star Excellence</span>
-            </div>
+          
+          <div className="flex justify-between items-center border-t border-[#FAF8F5]/5 pt-3 font-mono text-[9px] text-[#FAF8F5]/50 leading-none relative z-10">
+            <span>STATUS // NOMINAL</span>
+            <span className="text-[#C9A84C] font-semibold">100% SUCCESS RATE</span>
           </div>
-
-          <div className="bg-gradient-to-br from-[#16161D] to-[#0D0D12] border border-[#FAF8F5]/5 rounded-2xl p-4 flex items-center gap-4 relative overflow-hidden group/metric">
-            <div className="bg-blue-500/10 text-blue-400 p-2.5 rounded-xl border border-blue-500/20 shrink-0">
-              <ShieldCheck className="w-4 h-4" />
-            </div>
-            <div>
-              <span className="font-mono text-[9px] text-[#FAF8F5]/40 uppercase tracking-wider block">GUARANTEED RISK</span>
-              <span className="text-sm font-bold text-ivory block mt-0.5">No Credit Card Required</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
@@ -730,24 +477,24 @@ function CardShuffler() {
   const [items, setItems] = useState([
     { 
       id: 1, 
-      label: "BRAND DESIGN", 
-      metric: "01 / Brand Style", 
-      title: "Unique Logo & Matching Colors", 
-      desc: "Creating beautiful color palettes, logos, and fonts that make your cafe or shop stand out." 
+      label: "IDENTITY ARCHITECTURE", 
+      metric: "01 / Brand System", 
+      title: "Bespoke Logo & Palette Grid", 
+      desc: "Architecting color spectrums, modular icons, and typographic pairing that command instant authority." 
     },
     { 
       id: 2, 
-      label: "CLEAR CHAT COPY", 
-      metric: "02 / Simple Messaging", 
-      title: "Simple & Clear Copywriting", 
-      desc: "Writing friendly, persuasive English copy that speaks directly to Cairo and Alexandria business customers." 
+      label: "TONE & VOICE AUDIT", 
+      metric: "02 / Editorial Script", 
+      title: "High-Status Messaging Language", 
+      desc: "Structuring professional copy that explains absolute excellence, moving you above cheap competitors." 
     },
     { 
       id: 3, 
-      label: "READY-TO-USE ASSETS", 
-      metric: "03 / Brand Kit", 
-      title: "Complete Printing Media Kit", 
-      desc: "Delivering your final logo and images beautifully formatted for physical prints, social media, and Google Maps." 
+      label: "VISUAL GUIDELINE SYSTEM", 
+      metric: "03 / Digital Assets", 
+      title: "Ready-To-Print Media Kit", 
+      desc: "Delivering fully compiled assets configured for local physical printing, social channels, and maps." 
     }
   ]);
 
@@ -770,14 +517,14 @@ function CardShuffler() {
           <div className="bg-[#C9A84C]/10 text-[#C9A84C] p-3 rounded-2xl border border-[#C9A84C]/25">
             <Paintbrush className="w-5 h-5" />
           </div>
-          <span className="font-mono text-[10px] text-[#FAF8F5]/40 uppercase tracking-widest">[ SHUFFLER DIRECTORY ]</span>
+          <span className="font-mono text-[10px] text-[#FAF8F5]/40 uppercase tracking-widest">[ COMPONENT_A: SHUFFLER ]</span>
         </div>
 
         <h3 className="text-xl md:text-2xl font-bold font-sans text-ivory tracking-tight mb-2">
-          Professional Brand Mockups
+          Diagnostic Brand Modeler
         </h3>
         <p className="text-xs md:text-sm text-[#FAF8F5]/60 leading-relaxed font-sans mb-8">
-          We draft and refine your brand colors, custom logos, and fonts together to make sure your business looks exceptionally professional.
+          A bespoke virtual drafting kit that cycles complete color, logo, and structural assets automatically to ensure beautiful continuity.
         </p>
       </div>
 
@@ -831,7 +578,7 @@ function CardShuffler() {
                       <span className="w-2 h-2 rounded-full bg-slate-custom" />
                       <span className="w-2 h-2 rounded-full bg-ivory" />
                     </div>
-                    <span className="text-[8px] font-mono text-[#DAB85A]">STATUS: READY</span>
+                    <span className="text-[8px] font-mono text-[#DAB85A]">STATUS: CALIBRATED</span>
                   </div>
                 </motion.div>
               );
@@ -848,21 +595,21 @@ function CardShuffler() {
 // -------------------------------------------------------------
 function CardTelemetry() {
   const terminalLinesPool = [
-    "> STARTING customer_chat_setup.sh",
-    "> BUILDING client_welcome_profile... READY",
-    "> ROUTING customer_inquiries: 'Egypt_business'",
-    "> ACCELERATING website: 'Loads instantly'",
-    "> ATTACHED: Direct chat to WhatsApp",
-    "> STATUS: Live message delivery...",
-    "> CONNECTED: Instant chat button ready",
-    "> READY: Mobile friendly speed optimized"
+    "> INITIALIZE conversion_funnel.sh",
+    "> COMPILING high_intent_matrix... DONE",
+    "> PARSING client_interest: 'café_prestige'",
+    "> OPTIMIZING route_speed: '99.8ms latency'",
+    "> ATTACHED: Direct WhatsApp Webhook",
+    "> STATUS: Safe secure connection...",
+    "> ENGAGED: 1-Tap contact configured",
+    "> DEPLOYED: Mobile response speed inside 14ms"
   ];
 
   const valueProps = [
-    "Beautiful design layout",
-    "Optimized to get you more calls",
-    "Instant booking buttons",
-    "Super fast load speeds"
+    "Vibrant high-contrast web architecture",
+    "Bespoke layout optimized for conversion",
+    "Tailored call-to-action systems",
+    "100% Google Lighthouse speed score"
   ];
 
   const [activeLine, setActiveLine] = useState(0);
@@ -896,15 +643,15 @@ function CardTelemetry() {
           </div>
           <div className="flex items-center gap-2 font-mono text-[10px]">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-            <span className="text-emerald-400 font-semibold">[ REALTIME CHAT ]</span>
+            <span className="text-emerald-400 font-semibold">[ REALTIME LOGGER ]</span>
           </div>
         </div>
 
         <h3 className="text-xl md:text-2xl font-bold font-sans text-ivory tracking-tight mb-2">
-          WhatsApp Customer Connect
+          WhatsApp Telemetry Hub
         </h3>
         <p className="text-xs md:text-sm text-[#FAF8F5]/60 leading-relaxed font-sans mb-6">
-          Converting local visitors into paying customers by adding simple, direct chat buttons that connect clients straight to your phone.
+          Converting local lookers into paying customers via streamlined high-status landing pages integrated with direct fast messaging hooks.
         </p>
       </div>
 
@@ -912,10 +659,10 @@ function CardTelemetry() {
       <div className="flex-1 w-full bg-[#0D0D12] border border-[#FAF8F5]/5 rounded-xl p-4 font-mono text-xs flex flex-col justify-between shadow-inner h-[200px]">
         <div className="space-y-1 overflow-hidden">
           <div className="flex justify-between border-b border-white/5 pb-2 mb-2 text-[9px] text-stone-500">
-            <span>FILE: MOBILE_CHAT_SETUP.SYS</span>
-            <span>LIVE CHAT CONNECTED</span>
+            <span>FILE: APP_ROUTE_OPTIMIZER.SYS</span>
+            <span>PORT 3000 // OK</span>
           </div>
-          <div className="text-stone-500 text-[10px]">&gt; DIRECT WHATSAPP BUTTON ADDED</div>
+          <div className="text-stone-500 text-[10px]">&gt; SYSTEM BOOT COMPLETED ON LOCALTIME</div>
           <div className="text-champagne font-medium transition-all">
             {typedText}
             <span className="inline-block w-2 h-4 ml-1 bg-[#C9A84C] animate-pulse" />
@@ -989,10 +736,10 @@ function CardScheduler() {
       }, 8000);
 
       return () => {
-         clearTimeout(t1);
-         clearTimeout(t2);
-         clearTimeout(t3);
-         clearTimeout(t4);
+        clearTimeout(t1);
+        clearTimeout(t2);
+        clearTimeout(t3);
+        clearTimeout(t4);
       };
     };
 
@@ -1006,14 +753,14 @@ function CardScheduler() {
           <div className="bg-[#C9A84C]/10 text-[#C9A84C] p-3 rounded-2xl border border-[#C9A84C]/25">
             <Cpu className="w-5 h-5" />
           </div>
-          <span className="font-mono text-[10px] text-[#FAF8F5]/40 uppercase tracking-widest">[ 7-DAY DELIVERY GUARANTEE ]</span>
+          <span className="font-mono text-[10px] text-[#FAF8F5]/40 uppercase tracking-widest">[ DEPLOYMENT_GRID: SPEED ]</span>
         </div>
 
         <h3 className="text-xl md:text-2xl font-bold font-sans text-ivory tracking-tight mb-2">
-          7-Day Launch Promise
+          7-Day Transformation Engine
         </h3>
         <p className="text-xs md:text-sm text-[#FAF8F5]/60 leading-relaxed font-sans mb-6">
-          Your entire new website is designed, written, and launched live onto the web in exactly one week. No delays, no stress. Guaranteed.
+          Your entire system designed, coded, tested, and fully compiled on custom production instances within a rigid calendar week. Guaranteed.
         </p>
       </div>
 
@@ -1023,9 +770,9 @@ function CardScheduler() {
         {/* Days Header */}
         <div>
           <div className="flex justify-between items-center mb-3">
-            <span className="font-mono text-[8.5px] text-stone-500 uppercase">CREATIVE DESIGN WEEK</span>
+            <span className="font-mono text-[8.5px] text-stone-500 uppercase">TRANSFORMATION TIMELINE ROUTING</span>
             <span className="font-mono text-[9px] text-champagne bg-champagne/10 px-2 py-0.5 rounded border border-champagne/30">
-              {schedulerStep === 3 ? "WEBSITE LIVE" : "LAUNCH STAGES"}
+              {schedulerStep === 3 ? "LAUNCH DEPLOYED" : "COMPILING STAGES"}
             </span>
           </div>
 
@@ -1058,9 +805,9 @@ function CardScheduler() {
         {/* Dynamic Action Button Pressed by virtual cursor */}
         <div className="flex justify-between items-center bg-obsidian/80 border border-white/5 rounded-lg px-3 py-2.5 mt-2">
           <div className="flex flex-col">
-            <span className="text-[7.5px] font-mono text-stone-500 uppercase">WEBSITE LAUNCH STATUS</span>
+            <span className="text-[7.5px] font-mono text-stone-500 uppercase">OUTPUT DIRECTORY STATUS</span>
             <span className="text-[11px] font-sans text-ivory font-bold truncate">
-              {schedulerStep === 3 ? "✓ jimmycoffee.netlify.app/ LIVE" : "Awaiting final launch..."}
+              {schedulerStep === 3 ? "✓ jimmycoffee.netlify.app/ LIVE" : "Awaiting Deploy Stage 6..."}
             </span>
           </div>
 
@@ -1071,7 +818,7 @@ function CardScheduler() {
                 : 'bg-stone-800 text-stone-400 border border-white/5'
             }`}
           >
-            {savePressed ? "LAUNCHED" : "READY"}
+            {savePressed ? "ONLINE" : "STANDBY"}
           </button>
         </div>
 
@@ -1142,21 +889,21 @@ function PhilosophySection() {
         
         <div className="flex-1 space-y-8 select-none relative z-10">
           <span className="manifesto-reveal font-mono text-xs text-[#C9A84C] uppercase tracking-[0.3em] block">
-            [ OUR MISSION ]
+            [ THE MANIFESTO ]
           </span>
           
           <div className="space-y-8">
             <div className="manifesto-reveal">
               <span className="font-mono text-[10px] text-[#FAF8F5]/40 uppercase block mb-1.5">TRADITIONAL BOTTLENECKS //</span>
               <p className="text-sm md:text-base font-light text-stone-400 font-sans leading-relaxed">
-                Most design studios and web agencies focus exclusively on <span className="text-[#FAF8F5] font-semibold">unnecessarily complex code</span>, infinite multi-month layouts, and excessive invoice rates. Small business owners pay thousands just to end up standing still.
+                Most design studios and web agencies focus exclusively on <span className="text-[#FAF8F5] font-semibold">unnecessarily bloated portfolios</span>, infinite multi-month layout mockups, and excessive invoice rates. Small business owners pay thousands just to end up standing still.
               </p>
             </div>
 
             <div className="manifesto-reveal border-t border-[#FAF8F5]/5 pt-6">
-              <span className="font-mono text-[10px] text-[#C9A84C] uppercase block mb-1.5">THE AVANTA APPROACH //</span>
+              <span className="font-mono text-[10px] text-[#C9A84C] uppercase block mb-1.5">THE AVANTA SYNTAX SYSTEM //</span>
               <h2 className="text-xl md:text-2xl font-bold font-sans text-[#FAF8F5] tracking-tight leading-relaxed">
-                We focus purely on <span className="font-serif italic text-[#C9A84C] text-2.5xl md:text-3xl font-medium block sm:inline">helping your brand stand out.</span> Clean, high-end branding, lightning-fast delivery in 7 days, and direct client call buttons that work seamlessly.
+                We focus purely on <span className="font-serif italic text-[#C9A84C] text-2.5xl md:text-3xl font-medium block sm:inline">businesses that win.</span> Complete brand portfolios, hyper-fast delivery timescales, and automated booking triggers.
               </h2>
             </div>
           </div>
@@ -1167,12 +914,12 @@ function PhilosophySection() {
         {/* Grid of detail numbers following Bento Design stats block */}
         <div className="manifesto-reveal grid grid-cols-2 gap-6 w-full lg:w-auto shrink-0 select-none relative z-10">
           <div className="flex flex-col bg-[#0D0D12] p-6 rounded-2xl border border-[#FAF8F5]/5 min-w-[130px] shadow-inner">
-            <span className="text-4xl font-light font-sans text-[#C9A84C] leading-none">7</span>
+            <span className="text-4xl font-light font-sans text-[#C9A84C] leading-none">10</span>
             <span className="text-[9px] font-mono text-[#FAF8F5]/40 uppercase tracking-widest mt-2 block">Days Delivery</span>
           </div>
           <div className="flex flex-col bg-[#0D0D12] p-6 rounded-2xl border border-[#FAF8F5]/5 min-w-[130px] shadow-inner">
             <span className="text-4xl font-light font-sans text-[#C9A84C] leading-none">$250</span>
-            <span className="text-[9px] font-mono text-[#FAF8F5]/40 uppercase tracking-widest mt-2 block">Starting Price</span>
+            <span className="text-[9px] font-mono text-[#FAF8F5]/40 uppercase tracking-widest mt-2 block">Base Package</span>
           </div>
         </div>
       </div>
@@ -1214,20 +961,20 @@ function ProtocolSection() {
   const steps = [
     {
       num: "01",
-      title: "Design Your Brand & Logos",
-      desc: "We build a beautiful, high-end visual look for your business (logo, colors, clear simple fonts) to tell Alexandria and Cairo customers that you offer premium quality.",
+      title: "Synthesize the Identity Blueprint",
+      desc: "We analyze your audience and build a complete high-status visual language package (logo, custom typography grid, color spacing) to signal high quality to local buyers in Alexandria and Cairo.",
       visual: "spin"
     },
     {
       num: "02",
-      title: "Build Your Fast New Website",
-      desc: "Our team creates a custom, easy-to-use website that loads immediately on all phones and desktops. We make sure it is designed solely to turn local visitors into paying regulars.",
+      title: "Develop high-converting landing architecture",
+      desc: "Our team compiles your custom high-converting web system using custom coding patterns. Pages are structurally responsive, loading on ultra-modern hosting structures instantly.",
       visual: "laser"
     },
     {
       num: "03",
-      title: "Connect WhatsApp & Launch",
-      desc: "We add direct chat buttons that let customers call, book, or order easily with one click. Your brand and website goes live in exactly 7 days.",
+      title: "Automation Hook & Seamless Handover",
+      desc: "We configure a direct WhatsApp outreach CTA, making booking, café orders, or consultation questions click-to-book smooth. Your system launches in 7 days, complete with referral loops.",
       visual: "wave"
     }
   ];
@@ -1241,13 +988,13 @@ function ProtocolSection() {
       {/* Structural Headers */}
       <div className="mb-16 text-center">
         <span className="font-mono text-xs text-champagne uppercase tracking-[0.25em] block mb-3">
-          [ HOW WE WORK ]
+          [ DEPLOYMENT FLOW ]
         </span>
         <h2 className="text-3xl md:text-5xl font-sans font-bold text-ivory tracking-tight mb-4">
-          Our simple 3-step design process
+          The 3-stage deployment system
         </h2>
         <p className="text-sm font-sans text-stone-400 max-w-xl mx-auto">
-          We combine premium branding, fast launch, and direct WhatsApp buttons to make starting your project effortless.
+          We combine branding, rapid deployment, and chat triggers into a repeatable product roadmap designed for local cafés, gyms, and shops.
         </p>
       </div>
 
@@ -1261,7 +1008,7 @@ function ProtocolSection() {
             {/* Left Content */}
             <div className="flex-1 space-y-4">
               <span className="font-mono text-xs text-[#C9A84C] bg-[#C9A84C]/10 px-3.5 py-1.5 rounded-full border border-[#C9A84C]/20 inline-block font-semibold">
-                STEP {step.num}
+                SYSTEM MODULE {step.num}
               </span>
               <h3 className="text-2xl md:text-4xl font-sans font-bold text-ivory tracking-tight leading-tight">
                 {step.title}
@@ -1313,7 +1060,7 @@ function ProtocolSection() {
 
                   <div className="z-10 mt-auto bg-obsidian/90 p-2.5 rounded border border-white/10 w-full font-mono text-[9px] text-stone-400 space-y-1">
                     <div className="flex justify-between">
-                      <span>DESIGN BUILD:</span>
+                      <span>HTML COMPILING:</span>
                       <span className="text-champagne font-bold">100% OK</span>
                     </div>
                     <div className="h-1 w-full bg-slate-custom/30 rounded overflow-hidden">
@@ -1338,7 +1085,7 @@ function ProtocolSection() {
                     />
                   </svg>
                   <span className="font-mono text-[9px] text-center text-[#DAB85A] mt-2 tracking-widest uppercase">
-                    WHATSAPP CONNECTED
+                    ACTIVE PULSING CONVERSION
                   </span>
                 </div>
               )}
@@ -1367,14 +1114,14 @@ function CaseStudiesSection({
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 md:mb-24 gap-6">
           <div className="max-w-2xl text-left">
             <span className="font-mono text-xs text-champagne uppercase tracking-[0.25em] block mb-4">
-              [ OUR RECENT WORK ]
+              [ REAL WORLD MOMENTUM ]
             </span>
             <h2 className="text-3xl md:text-5xl font-sans tracking-tight text-ivory font-bold">
-              Designs that help local brands <span className="font-serif italic text-champagne font-medium">grow and stand out</span>.
+              Studios designed for <span className="font-serif italic text-champagne font-medium">uncompromising presence</span>.
             </h2>
           </div>
           <p className="text-stone-400 font-sans text-sm max-w-sm md:text-right leading-relaxed mb-1">
-            Browse our beautiful designs crafted specifically for local gyms, skincare shops, and cafes in Cairo and Alexandria.
+            Browse our core portfolio and ongoing conceptual blueprints engineered for gyms, skincare brands, and cafés.
           </p>
         </div>
 
@@ -1405,11 +1152,11 @@ function CaseStudiesSection({
                   {caseStudy.isReal ? (
                     <span className="font-mono text-[9px] bg-[#0D0D12] text-[#C9A84C] px-2.5 py-1 rounded-full font-bold uppercase tracking-widest border border-[#C9A84C]/25 flex items-center gap-1">
                       <Star className="w-2.5 h-2.5 fill-current" />
-                      LIVE CLIENT WEBSITE
+                      LIVE CLIENT LAUNCH
                     </span>
                   ) : (
                     <span className="font-mono text-[9px] bg-[#0D0D12]/90 text-[#FAF8F5]/60 px-2.5 py-1 rounded-full uppercase tracking-widest border border-[#FAF8F5]/10">
-                      CONCEPT DESIGN STYLE
+                      CONCEPT DESIGN BLUEPRINT
                     </span>
                   )}
                 </div>
@@ -1448,7 +1195,8 @@ function CaseStudiesSection({
                         rel="noreferrer"
                         className="inline-flex items-center gap-1.5 font-mono text-[10px] text-[#0D0D12] hover:text-[#0D0D12]/80 transition-colors uppercase tracking-widest font-bold border-b-2 border-[#0D0D12]"
                       >
-                        <span>See Our Work →</span>
+                        <span>VISIT SITE</span>
+                        <ExternalLink className="w-3 h-3" />
                       </a>
                     </div>
                   ) : (
@@ -1458,7 +1206,8 @@ function CaseStudiesSection({
                         href={getWhatsAppURL(`Hi Avanta, I really like the '${caseStudy.title}' design style. Can we do something similar for my business?`)}
                         className="inline-flex items-center gap-1 font-mono text-[10px] text-[#FAF8F5]/60 hover:text-[#C9A84C] transition-colors uppercase tracking-widest"
                       >
-                        <span>Start Your Project →</span>
+                        <span>CLAIM STYLE</span>
+                        <ChevronRight className="w-3.5 h-3.5" />
                       </a>
                     </div>
                   )}
@@ -1478,49 +1227,49 @@ function CaseStudiesSection({
 function PricingGrid({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => string }) {
   const plans = [
     {
-      name: "Professional Brand Design",
+      name: "Brand Archetype",
       price: "$150",
       time: "5–7 Days Delivery",
-      desc: "For local shops and cafes that have loyal customers but want to look highly professional and modern.",
+      desc: "For local stores and boutiques that have a loyal following but need to look like an established business online.",
       features: [
-        "Complete Logo Package",
-        "Beautiful & Clear Fonts",
-        "Professional Color Palette",
-        "Ready-to-print logo files",
-        "Formatted graphics for social media"
+        "Uncompromising Logo System",
+        "Calibrated Typography Scales",
+        "Prestige Editorial Guidelines",
+        "Ready-to-print SVG asset directory",
+        "Optimized Social Channel Brand Assets"
       ],
-      cta: "Start Your Project →",
+      cta: "SECURE ARCHETYPE",
       highlight: false
     },
     {
-      name: "The Complete Online Package",
+      name: "The Complete System",
       price: "$250",
       time: "7–10 Days Delivery",
-      desc: "Our best-selling package. We design your unique brand look and build your fast, customer-getting website all in one.",
+      desc: "Our high-status signature package. The ultimate complete transition of brand identity fused with lightning-speed booking launch.",
       features: [
-        "Everything in Professional Brand Design",
-        "Fast, High-Converting Website",
-        "Fully optimized for mobile screens",
-        "Built-in WhatsApp booking button",
-        "100% ownership of design & files",
-        "Optimized for local search in Egypt"
+        "Everything in Brand Archetype",
+        "High-Converting Landing Architecture",
+        "Full mobile-first adaptive UI",
+        "Custom instant-response WhatsApp Integration",
+        "100% Client-Ownership of complete code/assets",
+        "SEO architecture setup (Cairo/Alexa targeting)"
       ],
-      cta: "Start Your Project →",
+      cta: "SECURE COMPLETE TRANSFORMATION",
       highlight: true
     },
     {
-      name: "Nile Launch Offer",
+      name: "Performance Portal",
       price: "$120",
       time: "3–5 Days Delivery",
-      desc: "A rapid, single-page website to launch your business online. Perfect for getting direct bookings immediately via social media.",
+      desc: "A rapid 1-screen conversions solution. Perfect for direct social traffic landing to drive immediate inquiries.",
       features: [
-        "One-page custom-coded website",
-        "Clear call-to-action sections",
-        "Integrated WhatsApp button",
-        "Lightning-fast mobile load speed",
-        "Free hosting setup help"
+        "Fully coded custom React landing structure",
+        "Embedded conversion triggers and popups",
+        "WhatsApp click-to-book automation webhook",
+        "Lighthouse performance rating of 99s",
+        "Free secure production hosting setup"
       ],
-      cta: "Start Your Project →",
+      cta: "SECURE CONVERSION PORTAL",
       highlight: false
     }
   ];
@@ -1531,13 +1280,13 @@ function PricingGrid({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => str
         {/* Title block */}
         <div className="mb-16 md:mb-24 text-center max-w-2xl mx-auto">
           <span className="font-mono text-xs text-champagne uppercase tracking-[0.25em] block mb-4">
-            [ SIMPLE UPFRONT PLANS ]
+            [ UNCOMPROMISING PRICING ]
           </span>
           <h2 className="text-3xl md:text-5xl font-sans tracking-tight text-ivory font-bold mb-4">
-            No hidden fees. Simple upfront prices.
+            No dynamic margins. Simple upfront packages.
           </h2>
           <p className="text-stone-400 font-sans text-sm md:text-base">
-            Simple 7-day delivery targets. Start with a 50% deposit, and pay the rest only after you are completely happy with the final launch.
+            Deliverables with clear target dates. 50% deposit starts the build, remainder delivered upon full satisfaction and live launch.
           </p>
         </div>
 
@@ -1571,7 +1320,7 @@ function PricingGrid({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => str
                 {/* Highlight Label */}
                 {plan.highlight && (
                   <span className="absolute -top-4.5 left-1/2 -translate-x-1/2 bg-[#C9A84C] text-[#0D0D12] text-[8px] md:text-[8.5px] font-mono tracking-[0.16em] uppercase font-bold py-1 px-4.5 rounded-full border border-[#C9A84C] shadow-[0_4px_16px_rgba(201,168,76,0.3)] select-none whitespace-nowrap z-20 text-center">
-                    ★ RECOMMENDED COMPLETE PLAN
+                    ★ RECOMMENDED COMPLETE TRANSFORMATION
                   </span>
                 )}
 
@@ -1591,7 +1340,7 @@ function PricingGrid({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => str
                 </p>
 
                 <div className="border-t border-[#FAF8F5]/5 pt-6 mb-8">
-                  <span className="font-mono text-[9px] text-[#FAF8F5]/40 uppercase tracking-widest block mb-4">WHAT IS INCLUDED</span>
+                  <span className="font-mono text-[9px] text-[#FAF8F5]/40 uppercase tracking-widest block mb-4">SPECIFICATIONS INCLUDED</span>
                   <ul className="space-y-3.5">
                     {plan.features.map((feature, idx) => (
                       <li key={idx} className="flex gap-2.5 items-start text-xs text-stone-300 font-sans group/feat">
@@ -1642,7 +1391,7 @@ function Footer({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => string }
               <span className="text-xl font-bold tracking-[0.16em] text-ivory uppercase">AVANTA</span>
             </a>
             <p className="text-sm text-stone-400 max-w-sm font-light leading-relaxed">
-              We create beautiful brand logos and build ultra-fast websites to help Egyptian cafes, gyms, and shops attract regular, paying customers.
+              We design legendary visual identity profiles and code elite conversion pages to make local businesses attract consistent clients and look like the premier institution.
             </p>
           </div>
 
@@ -1650,10 +1399,10 @@ function Footer({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => string }
           <div className="space-y-4">
             <span className="font-mono text-[9px] text-[#DAB85A] uppercase tracking-[0.2em] block">STUDIO LINKS</span>
             <ul className="space-y-2 text-xs font-mono text-stone-500">
-              <li><a href="#services" className="hover:text-champagne transition-colors">OUR SERVICES</a></li>
-              <li><a href="#protocol" className="hover:text-champagne transition-colors">HOW IT WORKS</a></li>
-              <li><a href="#case-studies" className="hover:text-champagne transition-colors">CASE STUDIES</a></li>
-              <li><a href="#investment" className="hover:text-champagne transition-colors">PRICING PACKAGES</a></li>
+              <li><a href="#services" className="hover:text-champagne transition-colors">SPECIFICATION SERVICES</a></li>
+              <li><a href="#protocol" className="hover:text-champagne transition-colors">THE 3-STAGE PROTOCOL</a></li>
+              <li><a href="#case-studies" className="hover:text-champagne transition-colors">ACTIVE CASE DIRECTORY</a></li>
+              <li><a href="#investment" className="hover:text-champagne transition-colors">PRICING PLANS</a></li>
             </ul>
           </div>
 
@@ -1675,11 +1424,11 @@ function Footer({ getWhatsAppURL }: { getWhatsAppURL: (msg?: string) => string }
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
             </span>
-            <span>AVANTA STUDIO · ALEXANDRIA &amp; CAIRO · EST. 2026</span>
+            <span>SYSTEM MONITOR: 100% OPERATIONAL // ALEXANDRIA PLATFORM_NODE</span>
           </div>
 
           <div>
-            <span>© 2026 AVANTA INC. · BUILT WITH PASSION &amp; PRIDE</span>
+            <span>© 2026 AVANTA INC. · COMPILED WITH SOLIDITY &amp; PRIDE</span>
           </div>
         </div>
       </div>
